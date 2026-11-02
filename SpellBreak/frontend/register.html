@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register - SpellBreak</title>
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">SpellBreak</a>
+      <div class="nav-auth" id="navAuth"></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="card auth-card">
+        <h1>Create your account</h1>
+        <p class="subtitle">Free to join. Learn to spot AI voice-clone and deepfake scams.</p>
+
+        <form id="registerForm" novalidate>
+          <div class="field">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Your full name" autocomplete="name" required />
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required />
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="At least 8 characters" autocomplete="new-password" required />
+          </div>
+
+          <div class="field">
+            <label for="confirmPassword">Confirm password</label>
+            <input type="password" id="confirmPassword" placeholder="Re-enter your password" autocomplete="new-password" required />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full" id="submitBtn">Create account</button>
+
+          <p id="message" class="form-message" role="status" aria-live="polite"></p>
+        </form>
+
+        <p class="switch-line">Already have an account? <a href="login.html">Log in</a></p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    SpellBreak prototype · Synthetic data only
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/register.js"></script>
+</body>
+</html>
