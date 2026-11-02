@@ -1,3 +1,0 @@
--- Initial schema placeholder for SpellBreak (MSSQL)
--- Add CREATE TABLE statements here as features are built
--- (Users, StaffUsers, MessageChecks, TransferReviews, CodeRequestLogs, OfficialChannels, Cases).

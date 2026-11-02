@@ -1,2 +1,0 @@
--- Synthetic seed data placeholder for SpellBreak (MSSQL)
--- No real customer data or biometrics.
