@@ -1,0 +1,75 @@
+{
+  "_readme": "Synthetic test cases for the SCRUM-40 spike. 'expected' is the right answer, used to score the AI. Add images to samples/images and audio to samples/audio, then list them here. Cases whose files are missing are skipped.",
+  "cases": [
+    {
+      "id": "T1",
+      "kind": "text",
+      "expected": "scam",
+      "text": "Ma, it's me. I got into an accident and my phone is spoilt, this is my friend's number. I need $3,000 now for the hospital deposit. Please don't tell Dad, just transfer to this account: 012-345678-9."
+    },
+    {
+      "id": "T2",
+      "kind": "text",
+      "expected": "scam",
+      "text": "Hi Sarah, it's David (CEO). I'm in a board meeting and can't talk. I need you to process a confidential $25,000 payment to our new vendor before 5pm today. Don't loop in finance yet, I'll explain later. Reply once done."
+    },
+    {
+      "id": "T3",
+      "kind": "text",
+      "expected": "scam",
+      "text": "OCBC Alert: Unusual login detected on your account. To avoid suspension, our fraud officer will call you shortly. Please move your savings to the safe account provided and share the OTP you receive to verify your identity."
+    },
+    {
+      "id": "T4",
+      "kind": "text",
+      "expected": "scam",
+      "text": "Dear valued customer, as seen in our video with Lawrence Wong, our AI trading platform guarantees 30% monthly returns. Limited slots! Deposit S$500 today via the link to start earning."
+    },
+    {
+      "id": "T5",
+      "kind": "text",
+      "expected": "suspicious",
+      "text": "Hi, this is Mei from your company's HR department. Please confirm your bank details for this month's bonus payout by replying with your account number."
+    },
+    {
+      "id": "T6",
+      "kind": "text",
+      "expected": "safe",
+      "text": "Hi Dad, I'll be home late tonight because of project meeting. Can you save some dinner for me? Thanks!"
+    },
+    {
+      "id": "T7",
+      "kind": "text",
+      "expected": "safe",
+      "text": "Your OCBC card ending 1234 was used for SGD 12.50 at NTUC FairPrice on 03 Nov. If this was not you, call the number on the back of your card."
+    },
+    {
+      "id": "I1",
+      "kind": "image",
+      "expected": "scam",
+      "file": "images/fake-bank-sms.png",
+      "note": "Got this screenshot from someone claiming to be OCBC."
+    },
+    {
+      "id": "I2",
+      "kind": "image",
+      "expected": "scam",
+      "file": "images/deepfake-frame.jpg",
+      "note": "Still from a video call with my 'boss' asking me to pay a vendor."
+    },
+    {
+      "id": "V1",
+      "kind": "voice",
+      "expected": "scam",
+      "file": "audio/voice-clone-sample.mp3"
+    },
+    {
+      "id": "M1",
+      "kind": "multi",
+      "expected": "scam",
+      "text": "Boss: transfer the $25,000 now, I just video-called you, you saw it's me.",
+      "file": "images/deepfake-frame.jpg",
+      "note": "Message plus a frame from the video call."
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "summary": {
+    "ranAt": "2026-11-04T18:13:03.249Z",
+    "model": "gpt-4o-mini",
+    "transcribeModel": "whisper-1",
+    "cases": 1,
+    "ran": 1,
+    "skipped": 0,
+    "errors": 0,
+    "accuracy": "1/1",
+    "jsonFormatValid": "1/1",
+    "avgResponseMs": 4244,
+    "totalCostUsd": 0.00014,
+    "costPerCheckUsd": 0.00014,
+    "pricesUsed": {
+      "inputPer1M": 0.15,
+      "outputPer1M": 0.6,
+      "transcribePerMinute": 0.006,
+      "assumedAudioMinutes": 0.5
+    }
+  },
+  "rows": [
+    {
+      "id": "T1",
+      "kind": "text",
+      "expected": "scam",
+      "got": "scam",
+      "correct": true,
+      "formatOk": true,
+      "ms": 4244,
+      "usage": {
+        "inputTokens": 604,
+        "outputTokens": 75
+      },
+      "costUsd": 0.0001356,
+      "final": {
+        "verdict": "scam",
+        "confidence": 0.9,
+        "tricks": [
+          "urgency: need money for hospital deposit",
+          "secrecy: don't tell Dad"
+        ],
+        "ai_generated_signs": [],
+        "scam_type": "voice_clone_family",
+        "safe_actions": [
+          "Hang up and call your child using their saved number.",
+          "Do not transfer any money until you verify the situation."
+        ]
+      },
+      "findings": [
+        {
+          "agent": "text",
+          "result": {
+            "verdict": "scam",
+            "confidence": 0.9,
+            "tricks": [
+              "urgency: need money for hospital deposit",
+              "secrecy: don't tell Dad"
+            ],
+            "ai_generated_signs": [],
+            "scam_type": "voice_clone_family",
+            "safe_actions": [
+              "Hang up and call your child using their saved number.",
+              "Do not transfer any money until you verify the situation."
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
