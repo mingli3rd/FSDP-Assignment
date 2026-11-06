@@ -4,49 +4,53 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Log in - SpellBreak</title>
-  <link rel="stylesheet" href="css/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app.css" />
 </head>
 <body>
+  <div class="auth">
+    <aside class="auth-side">
+      <div>
+        <a class="brand" href="index.html"><span class="ollie" style="width:38px;height:38px" id="brandOllie"></span><span><span class="brand-name">SpellBreak</span><span class="brand-sub">AI scam protection with OCBC</span></span></a>
+        <h1>Pause. Check. Then pay.</h1>
+        <p>AI can copy a voice, fake a video call and write a perfect bank SMS. Ollie helps you spot it before your money moves.</p>
+        <span class="ollie ollie-big" id="bigOllie"></span>
+      </div>
+      <p class="fineprint">Prototype for the OCBC Digital Trust challenge. Synthetic data only.</p>
+    </aside>
 
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="logo">SpellBreak</a>
-      <div class="nav-auth" id="navAuth"></div>
-    </div>
-  </header>
-
-  <main>
-    <div class="container">
-      <div class="card auth-card">
-        <h1>Welcome back</h1>
-        <p class="subtitle">Log in to continue.</p>
+    <main class="auth-form">
+      <div class="auth-card">
+        <h2>Welcome back</h2>
+        <p class="lead">Log in to check messages, calls and payments.</p>
 
         <form id="loginForm" novalidate>
           <div class="field">
             <label for="email">Email</label>
-            <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required />
+            <input class="input" type="email" id="email" placeholder="you@example.com" autocomplete="email" required />
           </div>
-
           <div class="field">
             <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required />
+            <input class="input" type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required />
           </div>
-
-          <button type="submit" class="btn btn-primary btn-full" id="submitBtn">Log in</button>
-
+          <button type="submit" class="btn btn-primary btn-lg btn-full" id="submitBtn">Log in</button>
           <p id="message" class="form-message" role="status" aria-live="polite"></p>
         </form>
 
         <p class="switch-line">New here? <a href="register.html">Create an account</a></p>
+        <p class="switch-line" style="margin-top:8px"><a href="index.html">Try the demo without logging in</a></p>
       </div>
-    </div>
-  </main>
-
-  <footer class="site-footer">
-    SpellBreak prototype · Synthetic data only
-  </footer>
+    </main>
+  </div>
 
   <script src="js/main.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.getElementById("brandOllie").innerHTML = ollieSvg();
+    document.getElementById("bigOllie").innerHTML = ollieSvg();
+  </script>
   <script src="js/login.js"></script>
 </body>
 </html>

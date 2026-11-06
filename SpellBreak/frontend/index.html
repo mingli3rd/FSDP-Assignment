@@ -3,43 +3,120 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SpellBreak</title>
-  <link rel="stylesheet" href="css/main.css" />
+  <title>Home - SpellBreak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app.css" />
 </head>
-<body>
+<body data-page="home" data-crumb="Home">
+  <div class="shell">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
 
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="logo">SpellBreak</a>
-      <div class="nav-auth" id="navAuth"></div>
-    </div>
-  </header>
+      <main class="content">
 
-  <main>
-    <div class="container">
-      <section class="hero">
-        <h1>Spot the fake before it costs you.</h1>
-        <p>
-          SpellBreak helps you recognise, verify and respond to AI voice-clone
-          and deepfake scams before any money is lost.
-        </p>
-      </section>
+        <!-- P1: Ollie's welcome tour -->
+        <section class="welcome" aria-labelledby="tourTitle">
+          <div class="welcome-ollie" id="welcomeOllie"></div>
+          <div class="welcome-body">
+            <div class="tour-progress" aria-hidden="true" id="tourDots">
+              <span class="on"></span><span></span><span></span><span></span><span></span>
+            </div>
+            <p class="tour-step" id="tourStep">Tour, step 1 of 5</p>
+            <h1 id="tourTitle">Hi, I’m Ollie. I help you spot AI scams before you pay.</h1>
+            <p class="tour-text" id="tourText">I check messages, calls and payments, explain the risks in plain words, and help you verify with OCBC. Let me show you around, then you can turn on the extension in your OCBC app.</p>
+            <div class="tour-actions" id="tourActions">
+              <button class="btn btn-primary btn-lg" type="button" id="tourNext">Start the 1-minute tour</button>
+              <button class="btn btn-ghost" type="button" id="tourSkip">Skip for now</button>
+            </div>
+          </div>
+        </section>
 
-      <section class="card">
-        <h2>System check</h2>
-        <div class="status-row">
-          <span class="status-dot" id="healthDot"></span>
-          <span id="healthText">Checking...</span>
+        <h2 class="home-h2">What do you want to check?</h2>
+        <div class="tiles" id="tiles">
+          <a class="tile" href="scam-check.html" data-tour="scam-check">
+            <span class="tile-top"><span class="icon-tile" data-icon="scan"></span><span class="badge info plain">Spellbreak</span></span>
+            <h3>Quick Scam Check</h3>
+            <p>Paste a message or link, or upload a screenshot or recording.</p>
+            <span class="tile-cta">Start a check</span>
+          </a>
+          <a class="tile" href="call-check.html" data-tour="call-check">
+            <span class="tile-top"><span class="icon-tile" data-icon="phone"></span><span class="badge info plain">Spellbreak</span></span>
+            <h3>Call Context Check</h3>
+            <p>Just had a strange call? Answer 3 to 4 quick taps.</p>
+            <span class="tile-cta">Check a call</span>
+          </a>
+          <a class="tile" href="verify.html" data-tour="verify">
+            <span class="tile-top"><span class="icon-tile" data-icon="verify"></span><span class="badge clear plain">Verify</span></span>
+            <h3>Is this really OCBC?</h3>
+            <p>Verify a caller or message through an official channel.</p>
+            <span class="tile-cta">Verify now</span>
+          </a>
+          <a class="tile" href="report.html" data-tour="report">
+            <span class="tile-top"><span class="icon-tile" data-icon="report"></span><span class="badge neutral plain">Report</span></span>
+            <h3>Report a scam</h3>
+            <p>Save the evidence and send it to OCBC.</p>
+            <span class="tile-cta">Report it</span>
+          </a>
         </div>
-      </section>
-    </div>
-  </main>
 
-  <footer class="site-footer">
-    SpellBreak prototype · Synthetic data only
-  </footer>
+        <div class="home-lower">
+          <section class="panel extension-promo" data-tour="extension" aria-labelledby="extTitle">
+            <div class="panel-head">
+              <h2 id="extTitle">Protect your OCBC app too</h2>
+              <span class="badge neutral">Not connected</span>
+            </div>
+            <p class="muted">Turn on the extension inside OCBC’s own app and website. It only checks the action you are taking at that moment, using data the bank already has.</p>
+            <ul class="check-list">
+              <li>Smart Pause on unusual transfers</li>
+              <li>Spellbreak right inside the payment</li>
+              <li>QR payment check and Login Code Guard</li>
+            </ul>
+            <a class="btn btn-dark" href="extension.html">Set up the extension</a>
+          </section>
+
+          <section class="panel" aria-labelledby="recentTitle">
+            <div class="panel-head">
+              <h2 id="recentTitle">Recent checks</h2>
+              <a href="scam-check.html" class="small">New check</a>
+            </div>
+            <div class="recent">
+              <div class="list-row">
+                <span class="icon-tile" data-icon="text"></span>
+                <div class="grow">
+                  <div class="title">“Your OCBC account has been suspended…”</div>
+                  <div class="meta">SMS, today</div>
+                </div>
+                <span class="badge scam">Likely scam</span>
+              </div>
+              <div class="list-row">
+                <span class="icon-tile" data-icon="card"></span>
+                <div class="grow">
+                  <div class="title">Carousell seller payment link</div>
+                  <div class="meta">Link, yesterday</div>
+                </div>
+                <span class="badge signs">Some signs</span>
+              </div>
+              <div class="list-row">
+                <span class="icon-tile" data-icon="mic"></span>
+                <div class="grow">
+                  <div class="title">Voice note from “Mum”</div>
+                  <div class="meta">Voice, 2 days ago</div>
+                </div>
+                <span class="badge clear">No common signs</span>
+              </div>
+            </div>
+          </section>
+        </div>
+
+      </main>
+    </div>
+  </div>
 
   <script src="js/main.js"></script>
-  <script src="js/index.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/home.js"></script>
 </body>
 </html>

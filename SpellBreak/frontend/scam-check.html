@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick Scam Check - SpellBreak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body data-page="scam-check" data-crumb="Quick Scam Check" data-crumb-parent="Spellbreak">
+  <div class="shell">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+
+      <main class="content">
+        <div class="page-head">
+          <h1>Quick Scam Check</h1>
+          <p>Paste a message or link, upload a screenshot or QR code, or share a voice or video recording. Ollie checks it for scam tricks and AI signs.</p>
+        </div>
+
+        <div class="grid-main-side check-layout">
+          <!-- Input -->
+          <form class="panel" id="checkForm" novalidate>
+            <div class="segmented" role="tablist" aria-label="What are you checking?">
+              <button type="button" role="tab" aria-selected="true" data-mode="text" data-icon="text"> Text or link</button>
+              <button type="button" role="tab" aria-selected="false" data-mode="image" data-icon="image"> Image or QR</button>
+              <button type="button" role="tab" aria-selected="false" data-mode="voice" data-icon="mic"> Voice or video</button>
+            </div>
+
+            <div class="mode-pane" data-pane="text">
+              <div class="field" style="margin-top:20px">
+                <label for="message">Pasted message</label>
+                <textarea class="textarea" id="message" placeholder="Paste the message, email or link here">URGENT: Your OCBC account has been suspended. Verify your details within 10 minutes at ocbc-secure-login.co to avoid closure. Do not share this message with anyone.</textarea>
+                <div class="flag-preview" id="flagPreview" hidden></div>
+                <span class="hint" id="flagHint">After the check, red flags are underlined. Tap one to see why.</span>
+              </div>
+            </div>
+
+            <div class="mode-pane" data-pane="image" hidden>
+              <label class="dropzone" for="imageFile" style="margin-top:20px">
+                <span class="icon-tile" data-icon="upload"></span>
+                <strong>Drop a screenshot or QR code</strong>
+                <span class="muted small">PNG or JPG, up to 10 MB</span>
+                <input type="file" id="imageFile" accept="image/*" class="sr-only" />
+              </label>
+              <p class="file-name" id="imageName" hidden></p>
+            </div>
+
+            <div class="mode-pane" data-pane="voice" hidden>
+              <label class="dropzone" for="mediaFile" style="margin-top:20px">
+                <span class="icon-tile" data-icon="mic"></span>
+                <strong>Drop a voice note or video</strong>
+                <span class="muted small">MP3, M4A, WAV or MP4, up to 25 MB</span>
+                <input type="file" id="mediaFile" accept="audio/*,video/*" class="sr-only" />
+              </label>
+              <p class="file-name" id="mediaName" hidden></p>
+            </div>
+
+            <p class="section-label" id="sourceLabel">Where did you get it?</p>
+            <div class="chip-row" role="group" aria-labelledby="sourceLabel" id="sources">
+              <button type="button" class="chip" aria-pressed="true">SMS</button>
+              <button type="button" class="chip" aria-pressed="false">WhatsApp</button>
+              <button type="button" class="chip" aria-pressed="false">Telegram</button>
+              <button type="button" class="chip" aria-pressed="false">Email</button>
+              <button type="button" class="chip" aria-pressed="false">Carousell</button>
+              <button type="button" class="chip" aria-pressed="false">Phone call</button>
+            </div>
+
+            <div class="form-foot">
+              <p class="muted small">The demo uses synthetic samples only. Ollie never replies to the sender.</p>
+              <button class="btn btn-primary btn-lg" type="submit" id="checkBtn">Check with Spellbreak</button>
+            </div>
+          </form>
+
+          <!-- Result -->
+          <section class="panel result" aria-live="polite" aria-labelledby="resultTitle" id="result">
+            <h2 class="sr-only" id="resultTitle">Result</h2>
+            <div class="result-empty" id="resultEmpty">
+              <div data-ollie>Real OCBC messages never ask you to log in through a link. Paste anything that worries you and I’ll check it.</div>
+              <ul class="steps-mini">
+                <li><span data-icon="text"></span>Add the message, image or recording</li>
+                <li><span data-icon="scan"></span>Ollie looks for scam tricks and AI signs</li>
+                <li><span data-icon="verify"></span>You get a clear answer and safe next steps</li>
+              </ul>
+            </div>
+            <div id="resultBody" hidden></div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/risk.js"></script>
+  <script src="js/scam-check.js"></script>
+</body>
+</html>

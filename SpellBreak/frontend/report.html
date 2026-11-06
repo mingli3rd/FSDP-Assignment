@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Report - SpellBreak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body data-page="report" data-crumb="RC-2041" data-crumb-parent="Reports">
+  <div class="shell">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+
+      <main class="content">
+        <div class="page-head">
+          <h1>Case summary</h1>
+          <p>Only what you choose to submit is saved. You can send this to OCBC or download it for a police report.</p>
+        </div>
+
+        <div class="grid-main-side">
+          <div class="stack">
+            <section class="panel case-head" aria-labelledby="caseTitle">
+              <div class="panel-head">
+                <h2 id="caseTitle">Case RC-2041</h2>
+                <span class="badge scam num">Likely scam, 91%</span>
+              </div>
+              <dl class="facts">
+                <div><dt>Status</dt><dd><span class="status-dot"></span>Sent to OCBC, under review</dd></div>
+                <div><dt>Looks like</dt><dd>E-commerce scam</dd></div>
+                <div><dt>Amount at stake</dt><dd class="num">S$4,800 <span class="muted">(transfer cancelled)</span></dd></div>
+                <div><dt>Reported</dt><dd>Today, 2:05 pm</dd></div>
+              </dl>
+            </section>
+
+            <section class="panel" aria-labelledby="evTitle">
+              <div class="panel-head">
+                <h2 id="evTitle">Evidence you chose to include</h2>
+                <span class="small muted" id="evCount">4 of 5 items</span>
+              </div>
+              <div class="evidence" id="evidence">
+                <label class="list-row ev"><input type="checkbox" checked /><span class="icon-tile" data-icon="chat"></span><span class="grow"><span class="title">Telegram chat with the seller</span><span class="meta">Text, 6 messages</span></span></label>
+                <label class="list-row ev"><input type="checkbox" checked /><span class="icon-tile" data-icon="image"></span><span class="grow"><span class="title">Ticket photo</span><span class="meta">Image, flagged as likely AI-made</span></span><span class="badge signs plain">AI-made</span></label>
+                <label class="list-row ev"><input type="checkbox" checked /><span class="icon-tile" data-icon="card"></span><span class="grow"><span class="title">Payment details</span><span class="meta num">J. Tan, DBS ••• 4471, S$4,800</span></span></label>
+                <label class="list-row ev"><input type="checkbox" checked disabled /><span class="icon-tile" data-icon="scan"></span><span class="grow"><span class="title">Spellbreak result and red flags</span><span class="meta">Auto-saved</span></span></label>
+                <label class="list-row ev"><input type="checkbox" /><span class="icon-tile" data-icon="phone"></span><span class="grow"><span class="title">Call notes</span><span class="meta">Optional</span></span></label>
+              </div>
+              <div class="safe-actions" style="margin-top:20px">
+                <button type="button" class="btn btn-primary" data-icon="send" id="sendCase"> Send to OCBC</button>
+                <button type="button" class="btn btn-secondary" data-icon="download" id="downloadCase"> Download for police report (PDF)</button>
+              </div>
+            </section>
+          </div>
+
+          <aside class="stack">
+            <section class="panel" aria-labelledby="tlTitle">
+              <h2 id="tlTitle">Timeline</h2>
+              <ol class="timeline">
+                <li><time class="num">2:02 pm</time><span>Smart Pause paused the transfer (3 signals)</span></li>
+                <li><time class="num">2:03 pm</time><span>You chose “Verify first”</span></li>
+                <li class="bad"><time class="num">2:03 pm</time><span>Spellbreak: Likely scam, 91%</span></li>
+                <li class="good"><time class="num">2:04 pm</time><span>You cancelled the transfer</span></li>
+                <li><time class="num">2:05 pm</time><span>Case sent to the OCBC triage team</span></li>
+              </ol>
+            </section>
+            <div data-ollie>You did the right thing. Your money did not leave your account.</div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/report.js"></script>
+</body>
+</html>

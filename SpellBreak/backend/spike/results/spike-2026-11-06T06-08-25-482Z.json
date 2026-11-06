@@ -1,0 +1,421 @@
+{
+  "summary": {
+    "ranAt": "2026-11-06T06:08:25.480Z",
+    "model": "gpt-4o-mini",
+    "transcribeModel": "whisper-1",
+    "cases": 11,
+    "ran": 8,
+    "skipped": 3,
+    "errors": 0,
+    "accuracy": "6/8",
+    "jsonFormatValid": "8/8",
+    "avgResponseMs": 2208,
+    "totalCostUsd": 0.00662,
+    "costPerCheckUsd": 0.00083,
+    "pricesUsed": {
+      "inputPer1M": 0.15,
+      "outputPer1M": 0.6,
+      "transcribePerMinute": 0.006,
+      "assumedAudioMinutes": 0.5
+    }
+  },
+  "rows": [
+    {
+      "id": "T1",
+      "kind": "text",
+      "expected": "scam",
+      "got": "scam",
+      "correct": true,
+      "formatOk": true,
+      "ms": 3510,
+      "usage": {
+        "inputTokens": 604,
+        "outputTokens": 78
+      },
+      "costUsd": 0.0001374,
+      "final": {
+        "verdict": "scam",
+        "confidence": 0.9,
+        "tricks": [
+          "urgency: need money for hospital deposit",
+          "secrecy: don't tell Dad"
+        ],
+        "ai_generated_signs": [],
+        "scam_type": "voice_clone_family",
+        "safe_actions": [
+          "Hang up and call your child using the number saved in your phone.",
+          "Do not transfer any money until you verify the situation."
+        ]
+      },
+      "findings": [
+        {
+          "agent": "text",
+          "result": {
+            "verdict": "scam",
+            "confidence": 0.9,
+            "tricks": [
+              "urgency: need money for hospital deposit",
+              "secrecy: don't tell Dad"
+            ],
+            "ai_generated_signs": [],
+            "scam_type": "voice_clone_family",
+            "safe_actions": [
+              "Hang up and call your child using the number saved in your phone.",
+              "Do not transfer any money until you verify the situation."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "T2",
+      "kind": "text",
+      "expected": "scam",
+      "got": "suspicious",
+      "correct": false,
+      "formatOk": true,
+      "ms": 2163,
+      "usage": {
+        "inputTokens": 603,
+        "outputTokens": 85
+      },
+      "costUsd": 0.00014145,
+      "final": {
+        "verdict": "suspicious",
+        "confidence": 0.8,
+        "tricks": [
+          "urgency: pay before 5pm",
+          "secrecy: don't loop in finance"
+        ],
+        "ai_generated_signs": [],
+        "scam_type": "other",
+        "safe_actions": [
+          "Verify with David by calling the number saved in your phone.",
+          "Do not reply to the message.",
+          "Contact OCBC at 6363 3333 for guidance."
+        ]
+      },
+      "findings": [
+        {
+          "agent": "text",
+          "result": {
+            "verdict": "suspicious",
+            "confidence": 0.8,
+            "tricks": [
+              "urgency: pay before 5pm",
+              "secrecy: don't loop in finance"
+            ],
+            "ai_generated_signs": [],
+            "scam_type": "other",
+            "safe_actions": [
+              "Verify with David by calling the number saved in your phone.",
+              "Do not reply to the message.",
+              "Contact OCBC at 6363 3333 for guidance."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "T3",
+      "kind": "text",
+      "expected": "scam",
+      "got": "scam",
+      "correct": true,
+      "formatOk": true,
+      "ms": 1694,
+      "usage": {
+        "inputTokens": 594,
+        "outputTokens": 83
+      },
+      "costUsd": 0.0001389,
+      "final": {
+        "verdict": "scam",
+        "confidence": 0.9,
+        "tricks": [
+          "urgency: avoid suspension",
+          "request to share OTP"
+        ],
+        "ai_generated_signs": [],
+        "scam_type": "ai_phishing_message",
+        "safe_actions": [
+          "Hang up and call OCBC at 6363 3333.",
+          "Do not share your OTP with anyone.",
+          "Check your account directly through the official OCBC app or website."
+        ]
+      },
+      "findings": [
+        {
+          "agent": "text",
+          "result": {
+            "verdict": "scam",
+            "confidence": 0.9,
+            "tricks": [
+              "urgency: avoid suspension",
+              "request to share OTP"
+            ],
+            "ai_generated_signs": [],
+            "scam_type": "ai_phishing_message",
+            "safe_actions": [
+              "Hang up and call OCBC at 6363 3333.",
+              "Do not share your OTP with anyone.",
+              "Check your account directly through the official OCBC app or website."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "T4",
+      "kind": "text",
+      "expected": "scam",
+      "got": "scam",
+      "correct": true,
+      "formatOk": true,
+      "ms": 2148,
+      "usage": {
+        "inputTokens": 589,
+        "outputTokens": 97
+      },
+      "costUsd": 0.00014654999999999998,
+      "final": {
+        "verdict": "scam",
+        "confidence": 0.9,
+        "tricks": [
+          "urgency: limited slots",
+          "promise of high returns: 30% monthly"
+        ],
+        "ai_generated_signs": [
+          "overly polished language",
+          "generic greeting"
+        ],
+        "scam_type": "ai_phishing_message",
+        "safe_actions": [
+          "Do not click any links in the message.",
+          "Hang up and call OCBC at 6363 3333.",
+          "Report the message to ScamShield helpline at 1799."
+        ]
+      },
+      "findings": [
+        {
+          "agent": "text",
+          "result": {
+            "verdict": "scam",
+            "confidence": 0.9,
+            "tricks": [
+              "urgency: limited slots",
+              "promise of high returns: 30% monthly"
+            ],
+            "ai_generated_signs": [
+              "overly polished language",
+              "generic greeting"
+            ],
+            "scam_type": "ai_phishing_message",
+            "safe_actions": [
+              "Do not click any links in the message.",
+              "Hang up and call OCBC at 6363 3333.",
+              "Report the message to ScamShield helpline at 1799."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "T5",
+      "kind": "text",
+      "expected": "suspicious",
+      "got": "suspicious",
+      "correct": true,
+      "formatOk": true,
+      "ms": 1481,
+      "usage": {
+        "inputTokens": 578,
+        "outputTokens": 79
+      },
+      "costUsd": 0.00013409999999999998,
+      "final": {
+        "verdict": "suspicious",
+        "confidence": 0.7,
+        "tricks": [
+          "urgency: confirm bank details for bonus payout"
+        ],
+        "ai_generated_signs": [],
+        "scam_type": "ai_phishing_message",
+        "safe_actions": [
+          "Do not reply to the message.",
+          "Verify with your HR department using the contact number you have saved.",
+          "Report to ScamShield helpline at 1799."
+        ]
+      },
+      "findings": [
+        {
+          "agent": "text",
+          "result": {
+            "verdict": "suspicious",
+            "confidence": 0.7,
+            "tricks": [
+              "urgency: confirm bank details for bonus payout"
+            ],
+            "ai_generated_signs": [],
+            "scam_type": "ai_phishing_message",
+            "safe_actions": [
+              "Do not reply to the message.",
+              "Verify with your HR department using the contact number you have saved.",
+              "Report to ScamShield helpline at 1799."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "T6",
+      "kind": "text",
+      "expected": "safe",
+      "got": "safe",
+      "correct": true,
+      "formatOk": true,
+      "ms": 3400,
+      "usage": {
+        "inputTokens": 574,
+        "outputTokens": 66
+      },
+      "costUsd": 0.0001257,
+      "final": {
+        "verdict": "safe",
+        "confidence": 0.9,
+        "tricks": [],
+        "ai_generated_signs": [],
+        "scam_type": "none",
+        "safe_actions": [
+          "Verify by calling your child on their saved number.",
+          "If unsure, ask them directly about the meeting.",
+          "Trust your instincts; if it feels off, check it out."
+        ]
+      },
+      "findings": [
+        {
+          "agent": "text",
+          "result": {
+            "verdict": "safe",
+            "confidence": 0.9,
+            "tricks": [],
+            "ai_generated_signs": [],
+            "scam_type": "none",
+            "safe_actions": [
+              "Verify by calling your child on their saved number.",
+              "If unsure, ask them directly about the meeting.",
+              "Trust your instincts; if it feels off, check it out."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "T7",
+      "kind": "text",
+      "expected": "safe",
+      "got": "safe",
+      "correct": true,
+      "formatOk": true,
+      "ms": 1306,
+      "usage": {
+        "inputTokens": 592,
+        "outputTokens": 69
+      },
+      "costUsd": 0.0001302,
+      "final": {
+        "verdict": "safe",
+        "confidence": 0.9,
+        "tricks": [],
+        "ai_generated_signs": [],
+        "scam_type": "none",
+        "safe_actions": [
+          "Check your transaction history in the OCBC app.",
+          "If you suspect fraud, call OCBC at the number on the back of your card.",
+          "Monitor your account for any unusual activity."
+        ]
+      },
+      "findings": [
+        {
+          "agent": "text",
+          "result": {
+            "verdict": "safe",
+            "confidence": 0.9,
+            "tricks": [],
+            "ai_generated_signs": [],
+            "scam_type": "none",
+            "safe_actions": [
+              "Check your transaction history in the OCBC app.",
+              "If you suspect fraud, call OCBC at the number on the back of your card.",
+              "Monitor your account for any unusual activity."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "I1",
+      "kind": "image",
+      "expected": "scam",
+      "got": "suspicious",
+      "correct": false,
+      "formatOk": true,
+      "ms": 1960,
+      "usage": {
+        "inputTokens": 37416,
+        "outputTokens": 94
+      },
+      "costUsd": 0.005668799999999999,
+      "final": {
+        "verdict": "suspicious",
+        "confidence": 0.9,
+        "tricks": [
+          "urgency: account will be suspended within 2 hours",
+          "phishing: verify your identity now"
+        ],
+        "ai_generated_signs": [],
+        "scam_type": "ai_phishing_message",
+        "safe_actions": [
+          "Hang up and call OCBC at 6363 3333",
+          "Do not click on any links in the message",
+          "Verify with a family member or boss using a saved contact number"
+        ]
+      },
+      "findings": [
+        {
+          "agent": "image",
+          "result": {
+            "verdict": "suspicious",
+            "confidence": 0.9,
+            "tricks": [
+              "urgency: account will be suspended within 2 hours",
+              "phishing: verify your identity now"
+            ],
+            "ai_generated_signs": [],
+            "scam_type": "ai_phishing_message",
+            "safe_actions": [
+              "Hang up and call OCBC at 6363 3333",
+              "Do not click on any links in the message",
+              "Verify with a family member or boss using a saved contact number"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "I2",
+      "kind": "image",
+      "skipped": "file not found: images/deepfake-frame.jpg"
+    },
+    {
+      "id": "V1",
+      "kind": "voice",
+      "skipped": "file not found: audio/voice-clone-sample.mp3"
+    },
+    {
+      "id": "M1",
+      "kind": "multi",
+      "skipped": "file not found: images/deepfake-frame.jpg"
+    }
+  ]
+}

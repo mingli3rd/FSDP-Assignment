@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify with OCBC - SpellBreak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body data-page="verify" data-crumb="Verify with OCBC">
+  <div class="shell">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+
+      <main class="content">
+        <div class="page-head">
+          <h1>Is this really OCBC?</h1>
+          <p>Scammers can fake caller ID and copy voices with AI. These checks rely on things they cannot fake.</p>
+        </div>
+
+        <div class="verify-grid">
+          <div class="stack">
+          <section class="panel code-panel" aria-labelledby="callerTitle">
+            <div class="panel-head">
+              <h2 id="callerTitle">Check a caller</h2>
+              <span class="badge clear">Live</span>
+            </div>
+            <p class="muted">Ask the caller to read out the code below. A real OCBC staff member sees the same code in their system.</p>
+
+            <div class="code-box">
+              <span class="small muted">Your code</span>
+              <div class="code num" id="verifyCode" aria-live="polite">482 917</div>
+              <div class="code-timer num"><span data-icon="clock"></span><span id="codeTimer">Expires in 04:59</span></div>
+              <div class="timer-bar"><i id="timerBar"></i></div>
+            </div>
+
+            <div class="code-outcome" id="codeOutcome">
+              <button type="button" class="btn btn-secondary" id="codeMatch" data-icon="check"> They read the right code</button>
+              <button type="button" class="btn btn-primary" id="codeNoMatch" data-icon="x"> They couldn’t, so hang up</button>
+            </div>
+            <div class="outcome-msg" id="outcomeMsg" hidden></div>
+          </section>
+          <div class="verify-tip" data-ollie>A code, or a call back on a number you saved yourself, can’t be faked by AI. A familiar voice can.</div>
+          </div>
+
+          <div class="stack">
+
+          <section class="panel" aria-labelledby="callbackTitle">
+            <h2 id="callbackTitle">Call back safely</h2>
+            <p class="muted" style="margin-top:6px">Hang up first. Then call OCBC on an official number. Never call the number in the message or the one the caller gives you.</p>
+            <div class="channels">
+              <div class="list-row">
+                <span class="icon-tile" data-icon="phone"></span>
+                <div class="grow"><div class="title">Official OCBC hotline</div><div class="meta num">+65 6363 3333, 24 hours</div></div>
+                <button type="button" class="btn btn-secondary" data-demo="Calling the official OCBC hotline (demo)">Call</button>
+              </div>
+              <div class="list-row">
+                <span class="icon-tile" data-icon="mail"></span>
+                <div class="grow"><div class="title">Secure mail in the OCBC app</div><div class="meta">Replies within 1 working day</div></div>
+                <button type="button" class="btn btn-secondary" data-demo="Opening secure mail in the OCBC app (demo)">Open</button>
+              </div>
+              <div class="list-row">
+                <span class="icon-tile" data-icon="pin"></span>
+                <div class="grow"><div class="title">Visit a branch</div><div class="meta">Bring your NRIC</div></div>
+                <button type="button" class="btn btn-secondary" data-demo="Showing branches near you (demo)">Find</button>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-full btn-lg" data-icon="phone" data-demo="Calling the official OCBC hotline (demo)"> Call OCBC now</button>
+          </section>
+
+          <section class="panel requester" aria-labelledby="reqTitle">
+            <h2 id="reqTitle">Verify the requester</h2>
+            <p class="muted" style="margin-top:6px">Got an urgent money request from your “boss” or “family”? Contact them on a number you already saved, or on a different app.</p>
+            <div class="segmented" role="tablist" aria-label="Who asked?" id="reqTabs" style="margin-top:16px">
+              <button type="button" role="tab" aria-selected="false" data-who="boss">Boss</button>
+              <button type="button" role="tab" aria-selected="true" data-who="family">Family</button>
+              <button type="button" role="tab" aria-selected="false" data-who="friend">Friend</button>
+            </div>
+            <div class="contact-card">
+              <span class="avatar" id="contactInitial">M</span>
+              <div class="grow"><div class="title" id="contactName">Mum</div><div class="meta num" id="contactNum">Saved contact, +65 9••• ••12</div></div>
+            </div>
+            <div class="safe-actions">
+              <button type="button" class="btn btn-dark" data-icon="phone" id="callSaved"> Call saved number</button>
+              <button type="button" class="btn btn-secondary" data-icon="chat" id="msgOther"> Message on another app</button>
+            </div>
+          </section>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/verify.js"></script>
+</body>
+</html>
