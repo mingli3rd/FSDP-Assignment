@@ -101,7 +101,7 @@ const SCREENS = {
         <button type="button" data-go="transfer"><span class="q-icon">${icon("send")}</span>Transfer</button>
         <button type="button" data-go="scan"><span class="q-icon">${icon("qr")}</span>Scan & pay</button>
         <button type="button" data-go="onetoken"><span class="q-icon">${icon("key")}</span>OneToken</button>
-        <button type="button" data-go="statements"><span class="q-icon">${icon("doc")}</span>e-Statements</button>
+        <button type="button" data-go="statements"><span class="q-icon">${icon("doc")}</span>Statements</button>
       </div>
       ${state.on
         ? `<button type="button" class="promo" data-go="security">${ollie()}<span><strong>Ollie is protecting you</strong><span>5 scam checks are on. Tap to change them.</span></span></button>`

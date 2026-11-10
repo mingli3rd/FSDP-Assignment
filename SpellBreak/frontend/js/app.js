@@ -57,7 +57,8 @@ function ollieSvg() {
 }
 
 function ollie(size = 44) {
-  return `<span class="ollie" style="width:${size}px;height:${size}px">${ollieSvg()}</span>`;
+  const rem = size / 16; // scales with the fluid base font size
+  return `<span class="ollie" style="width:${rem}rem;height:${rem}rem">${ollieSvg()}</span>`;
 }
 
 // <div class="ollie-tip" data-ollie>Text</div> gets Ollie + bubble automatically
