@@ -12,6 +12,9 @@ const authController = require("./controllers/authController");
 const { validateRegister, validateLogin } = require("./middlewares/authValidation");
 const { verifyToken, requireEmployee, requireCustomer } = require("./middlewares/authMiddleware");
 
+const analysisController = require("./controllers/analysisController");
+const { validateAnalyseText } = require("./middlewares/analysisValidation");
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -41,6 +44,8 @@ app.get("/api/auth/me", verifyToken, authController.getCurrentUser);
 // Mobile banking demo (extension screens) on port 4000 - see mobile-server.js
 require("./mobile-server");
 
+// ===================== ANALYSIS ROUTES =====================
+app.post("/api/analyse-text", verifyToken, requireCustomer, validateAnalyseText, analysisController.analyseText);
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
   console.log(`→ http://localhost:${port}`);
