@@ -64,21 +64,31 @@ form.addEventListener("submit", async (event) => {
   checkBtn.disabled = true;
   checkBtn.textContent = "Ollie is checking…";
 
-  let result = await checkWithApi({ text, file });
-  let isDemo = false;
-  if (!result) {
+  const api = await checkWithApi({ text, file });
+  let result;
+  let demoReason = null;
+  if (api.ok) {
+    result = fromApi(api.data.final);
+  } else {
     result = demoCheck(mode, text);
-    isDemo = true;
+    demoReason = api.status === 401 ? "login" : api.status === 403 ? "staff" : api.status === 400 ? null : "offline";
+    if (api.status === 400) {
+      // Validation problem (e.g. message too short): show the API's message, no result
+      checkBtn.disabled = false;
+      checkBtn.textContent = "Check with Spellbreak";
+      return showToast(api.error);
+    }
     await new Promise((r) => setTimeout(r, 650)); // feels like real work
   }
 
-  renderResult(result, isDemo);
+  renderResult(result, demoReason);
   if (mode === "text") showFlags(text);
 
   checkBtn.disabled = false;
   checkBtn.textContent = "Check again";
 });
 
+// Calls the real AI (SCRUM-17). Returns { ok, status, data, error }.
 async function checkWithApi({ text, file }) {
   try {
     const body = new FormData();
@@ -88,12 +98,81 @@ async function checkWithApi({ text, file }) {
     if (file) body.append("file", file);
 
     const response = await fetch(`${apiBaseUrl}/api/checks`, { method: "POST", credentials: "include", body });
-    if (!response.ok) return null;
-    const data = await response.json();
-    return data.final || data; // accept { final: {...} } or the result itself
+    const data = await response.json().catch(() => ({}));
+    return { ok: response.ok, status: response.status, data, error: data.error };
   } catch (error) {
-    return null; // API not running or route not built yet
+    return { ok: false, status: 0, error: "Server not reachable" }; // API not running
   }
+}
+
+// Ollie's tip, based on what THIS message actually does (not just the risk level).
+// Checked in order: the most dangerous thing in the message decides the tip.
+function tipFromResult(final) {
+  if (final.level === "no_common_signs") {
+    return "I didn’t find common scam signs. If they later ask for money, codes or your details, check again.";
+  }
+  const tricks = final.tricks.map((t) => t.name.toLowerCase()).join(" ");
+  const asks = (final.requested_action || "").toLowerCase();
+  const who = final.claimed_identity || "";
+  const whoLabel = who || "the sender";
+  const ext = final.extracted || {};
+  const ind = final.ai_indicators || {};
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+  if ((ext.links || []).length || /link/.test(tricks)) {
+    return /ocbc|bank/i.test(who)
+      ? "Don’t open the link. Real OCBC messages never ask you to log in through a link."
+      : "Don’t open the link. Go to the real website or app yourself instead.";
+  }
+  if (/code|otp|password|pin/.test(tricks + " " + asks)) {
+    return "Never share an OTP, PIN or password, not even with someone who says they’re from OCBC.";
+  }
+  if (/bank|account|card|details|nric/.test(tricks + " " + asks)) {
+    return who
+      ? `${cap(who)} should already have what they need. Check with them on a number you already have before you reply.`
+      : "Don’t send your bank or personal details by message. Check with the person on a number you already have.";
+  }
+  if (ind.claims_known_person) {
+    return `Before you do anything, call ${whoLabel} on the number already saved in your phone.`;
+  }
+  if (/money|transfer|pay/.test(tricks + " " + asks)) {
+    return "Don’t send any money until you’ve checked with them on a number you already have.";
+  }
+  if (ind.public_figure_endorsement) {
+    return "Celebrities and ministers don’t promote investments in messages or ads. Don’t pay or sign up.";
+  }
+  return final.level === "likely_scam"
+    ? "This looks like a scam. Don’t reply, and check with OCBC on an official number."
+    : "Some parts of this worry me. Let’s verify before you do anything.";
+}
+
+// Converts the API's result format (services/ai/scamSchema.js) into what this page shows
+function fromApi(final) {
+  const verdict = { likely_scam: "scam", some_signs: "suspicious", no_common_signs: "safe" }[final.level];
+  const ind = final.ai_indicators || {};
+  const aiSigns = [
+    ...(ind.public_figure_endorsement ? ["Uses a public figure to promote something"] : []),
+    ...(ind.claims_known_person ? ["Pretends to be someone you know"] : []),
+    ...(ind.personal_details_used ? ["Uses your personal details to seem real"] : []),
+    ...(ind.ai_generated_signs || []),
+  ];
+  const who = final.claimed_identity ? `They claim to be ${final.claimed_identity}` : "";
+  const ask = final.requested_action ? `and want you to ${final.requested_action}` : "";
+  const extracted = final.extracted || {};
+  const evidence = [...(extracted.links || []), ...(extracted.phone_numbers || []), ...(extracted.bank_accounts || [])];
+  return {
+    verdict,
+    confidence: final.confidence,
+    tricks: final.tricks.map((t) => (t.quote ? `${t.name}: “${t.quote}”` : t.name)),
+    ai_generated_signs: aiSigns,
+    scam_type: final.scam_type,
+    ollie_tip: tipFromResult(final),
+    what_next_label: "What they want from you",
+    what_next: [who && `${who} ${ask}`.trim() + ".", evidence.length ? `Don’t use these: ${evidence.join(", ")}.` : ""]
+      .filter(Boolean)
+      .join(" ") || null,
+    safe_actions: final.safe_actions,
+  };
 }
 
 // ---------- Demo checker (rules that mirror the AI prompt) ----------
@@ -183,12 +262,12 @@ function splitTrick(t) {
   return i > 0 ? [t.slice(0, i), t.slice(i + 1).trim()] : [t, ""];
 }
 
-function renderResult(r, isDemo) {
+function renderResult(r, demoReason) {
   const level = levelFromVerdict(r.verdict);
-  const tip =
-    level.key === "scam" ? "Don’t click the link or reply. Real OCBC messages never ask you to log in through a link."
+  const tip = r.ollie_tip ||
+    (level.key === "scam" ? "Don’t click the link or reply. Real OCBC messages never ask you to log in through a link."
     : level.key === "signs" ? "Some parts of this worry me. Let’s verify before you do anything."
-    : "I didn’t find common scam signs. Stay alert if they later ask for money or codes.";
+    : "I didn’t find common scam signs. Stay alert if they later ask for money or codes.");
 
   const tricks = r.tricks.length
     ? `<p class="section-label">Scam tricks found</p>
@@ -199,7 +278,7 @@ function renderResult(r, isDemo) {
     ? `<p class="section-label">AI signs</p><ul class="ai-signs">${r.ai_generated_signs.map((s) => `<li>${escapeHtml(s)}</li>`).join("")}</ul>`
     : "";
 
-  const next = r.what_next ? `<p class="section-label">What usually happens next</p><p class="next-text">${escapeHtml(r.what_next)}</p>` : "";
+  const next = r.what_next ? `<p class="section-label">${r.what_next_label || "What usually happens next"}</p><p class="next-text">${escapeHtml(r.what_next)}</p>` : "";
 
   const actions = r.safe_actions
     .map((a, i) => {
@@ -218,7 +297,13 @@ function renderResult(r, isDemo) {
       ${next}
       <p class="section-label">Safe actions</p>
       <div class="safe-actions">${actions}</div>
-      ${isDemo ? `<p class="demo-note">${icon("info")}Demo result. Connect <code>/api/checks</code> to use the real AI.</p>` : ""}
+      ${demoReason === "login"
+        ? `<p class="demo-note">${icon("info")}<span>Demo result. <a href="login.html">Log in</a> to check with the real AI.</span></p>`
+        : demoReason === "staff"
+          ? `<p class="demo-note">${icon("info")}<span>Demo result. Staff accounts can’t run customer checks.</span></p>`
+        : demoReason
+          ? `<p class="demo-note">${icon("info")}<span>Demo result. The AI check isn’t available right now.</span></p>`
+          : `<p class="demo-note">${icon("check")}<span>Checked by the SpellBreak AI and saved to your history.</span></p>`}
     </div>`;
 
   resultEmpty.hidden = true;

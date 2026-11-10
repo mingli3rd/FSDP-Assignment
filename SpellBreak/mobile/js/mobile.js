@@ -237,7 +237,7 @@ const SCREENS = {
       const order = ["clear", "signs", "scam"];
       const idx = order.indexOf(level[0]);
       return `
-        <div class="verdict ${level[0]}"><span class="v-icon">${icon(level[2])}</span><div><div class="v-title">${level[1]}</div><div class="v-sub num">${Math.round(r.confidence * 100)}% confidence</div></div></div>
+        <div class="verdict ${level[0]}"><span class="v-icon">${icon(level[2])}</span><div><div class="v-title">${level[1]}</div></div></div>
         <div class="meter">${["No common signs", "Some signs", "Likely scam"].map((l, i) => `<span class="${i <= idx ? "on" : ""} ${i === idx ? "active" : ""}">${l}</span>`).join("")}</div>
         <p class="section-title">Scam tricks</p>
         <div class="card"><ol class="tricks">${r.tricks.map((t) => `<li><span>${escapeHtml(t)}</span></li>`).join("")}</ol></div>

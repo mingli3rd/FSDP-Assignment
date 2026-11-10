@@ -12,6 +12,11 @@ const authController = require("./controllers/authController");
 const { validateRegister, validateLogin } = require("./middlewares/authValidation");
 const { verifyToken, requireEmployee, requireCustomer } = require("./middlewares/authMiddleware");
 
+// --- Spellbreak AI check (SCRUM-17) ---
+const checkController = require("./controllers/checkController");
+const { validateCheck } = require("./middlewares/checkValidation");
+const { uploadCheckImage } = require("./middlewares/uploadImage");
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -38,6 +43,13 @@ app.post("/api/auth/login", validateLogin, authController.login);
 app.post("/api/auth/logout", authController.logout);
 app.get("/api/auth/me", verifyToken, authController.getCurrentUser);
 
+// ===================== SPELLBREAK AI CHECK (SCRUM-17) =====================
+// Logged-in customers only. uploadCheckImage runs first to read the multipart form
+// (text fields + optional image), then validation, then the AI check.
+app.post("/api/checks", verifyToken, requireCustomer, uploadCheckImage, validateCheck, checkController.createCheck);
+app.get("/api/checks/mine", verifyToken, requireCustomer, checkController.getMyChecks);
+app.get("/api/checks/:id", verifyToken, requireCustomer, checkController.getCheck);
+
 // Mobile banking demo (extension screens) on port 4000 - see mobile-server.js
 require("./mobile-server");
 
@@ -51,4 +63,4 @@ process.on("SIGINT", async () => {
   await sql.close();
   console.log("Database connections closed");
   process.exit(0);
-});
+});

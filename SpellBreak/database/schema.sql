@@ -32,13 +32,15 @@ CREATE TABLE ContentChecks (
     id           INT IDENTITY(1,1) PRIMARY KEY,
     user_id      INT NOT NULL REFERENCES Users(id),
     scenario_id  INT NULL REFERENCES Scenarios(id),
-    media_type   VARCHAR(10)  NOT NULL CHECK (media_type IN ('audio', 'video')),
+    media_type   VARCHAR(10)  NOT NULL CHECK (media_type IN ('text', 'image', 'audio', 'video')),
     media_url    VARCHAR(500) NULL,
     transcript   NVARCHAR(MAX) NULL,
-    ai_score     DECIMAL(5,2) NULL,             -- 0-100: likelihood the media is AI-generated
+    ai_score     DECIMAL(5,2) NULL,             -- 0-100: AI confidence in the risk level
     risk_level   VARCHAR(10)  NULL CHECK (risk_level IN ('low', 'medium', 'high')),
-    signals      NVARCHAR(MAX) NULL,            -- JSON array of warning signals found
-    explanation  NVARCHAR(MAX) NULL,            -- plain-language explanation + safe actions
+    signals      NVARCHAR(MAX) NULL,            -- JSON: tricks (with quotes), extracted links/numbers, AI indicators
+    explanation  NVARCHAR(MAX) NULL,            -- JSON: claimed identity, requested action, safe actions
+    scam_type    VARCHAR(50)  NULL,             -- matches SCAM_TYPES in services/ai/scamSchema.js
+    source       VARCHAR(30)  NULL,             -- where the customer got it, e.g. SMS, WhatsApp
     created_at   DATETIME2    NOT NULL DEFAULT SYSDATETIME()
 );
 
