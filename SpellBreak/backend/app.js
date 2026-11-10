@@ -38,6 +38,9 @@ app.post("/api/auth/login", validateLogin, authController.login);
 app.post("/api/auth/logout", authController.logout);
 app.get("/api/auth/me", verifyToken, authController.getCurrentUser);
 
+// Mobile banking demo (extension screens) on port 4000 - see mobile-server.js
+require("./mobile-server");
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
   console.log(`→ http://localhost:${port}`);

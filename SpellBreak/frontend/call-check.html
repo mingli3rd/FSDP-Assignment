@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Call Context Check - SpellBreak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body data-page="call-check" data-crumb="Call Context Check" data-crumb-parent="Spellbreak">
+  <div class="shell">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+
+      <main class="content">
+        <div class="page-head">
+          <h1>Call Context Check</h1>
+          <p>Just had a call that felt off? Answer a few quick taps. We never record your call or your voice.</p>
+        </div>
+
+        <div class="grid-main-side">
+          <section class="panel quiz" aria-labelledby="qTitle">
+            <div class="quiz-top">
+              <p class="tour-step num" id="qCount">Question 1 of 4</p>
+              <div class="tour-progress" id="qDots" aria-hidden="true"><span class="on"></span><span></span><span></span><span></span></div>
+            </div>
+
+            <div class="question" data-q="who">
+              <h2 id="qTitle">Who did they say they were?</h2>
+              <div class="choice-grid" role="radiogroup" aria-labelledby="qTitle">
+                <button type="button" class="choice" role="radio" aria-checked="false" data-value="bank" data-icon="card"><span>My bank</span></button>
+                <button type="button" class="choice" role="radio" aria-checked="false" data-value="gov" data-icon="verify"><span>Police or government</span></button>
+                <button type="button" class="choice" role="radio" aria-checked="false" data-value="boss" data-icon="users"><span>My boss</span></button>
+                <button type="button" class="choice" role="radio" aria-checked="false" data-value="family" data-icon="home"><span>A family member</span></button>
+                <button type="button" class="choice" role="radio" aria-checked="false" data-value="seller" data-icon="report"><span>A company or seller</span></button>
+                <button type="button" class="choice" role="radio" aria-checked="false" data-value="other" data-icon="chat"><span>Someone else</span></button>
+              </div>
+            </div>
+
+            <div class="question" data-q="ask" data-multi hidden>
+              <h2 id="qAsk">What did they ask for?</h2>
+              <p class="muted small">Pick all that apply.</p>
+              <div class="choice-grid" role="group" aria-labelledby="qAsk">
+                <button type="button" class="choice" aria-pressed="false" data-value="money" data-icon="send"><span>Transfer money</span></button>
+                <button type="button" class="choice" aria-pressed="false" data-value="otp" data-icon="key"><span>My OTP or login code</span></button>
+                <button type="button" class="choice" aria-pressed="false" data-value="details" data-icon="lock"><span>Personal details</span></button>
+                <button type="button" class="choice" aria-pressed="false" data-value="app" data-icon="extension"><span>Install an app or share my screen</span></button>
+              </div>
+            </div>
+
+            <div class="question" data-q="pressure" hidden>
+              <h2 id="qPressure">Did they rush you or tell you to keep it secret?</h2>
+              <div class="choice-grid" role="radiogroup" aria-labelledby="qPressure">
+                <button type="button" class="choice" role="radio" aria-checked="false" data-value="both"><span>Yes, both</span></button>
+                <button type="button" class="choice" role="radio" aria-checked="false" data-value="rush"><span>Only rushed me</span></button>
+                <button type="button" class="choice" role="radio" aria-checked="false" data-value="secret"><span>Only said keep it secret</span></button>
+                <button type="button" class="choice" role="radio" aria-checked="false" data-value="no"><span>No</span></button>
+              </div>
+            </div>
+
+            <div class="question" data-q="callback" hidden>
+              <h2 id="qCallback">Did they give you a number to call back?</h2>
+              <div class="choice-grid" role="radiogroup" aria-labelledby="qCallback">
+                <button type="button" class="choice" role="radio" aria-checked="false" data-value="yes"><span>Yes</span></button>
+                <button type="button" class="choice" role="radio" aria-checked="false" data-value="no"><span>No</span></button>
+                <button type="button" class="choice" role="radio" aria-checked="false" data-value="unsure"><span>Not sure</span></button>
+              </div>
+            </div>
+
+            <div class="quiz-nav">
+              <button type="button" class="btn btn-ghost" id="backBtn" disabled>Back</button>
+              <button type="button" class="btn btn-primary" id="nextBtn" disabled>Next</button>
+            </div>
+          </section>
+
+          <section class="panel result" aria-live="polite" id="callResult">
+            <div data-ollie>OCBC will never ask for your OTP or login code over the phone. Tell me about the call and I’ll match it to known scam patterns.</div>
+            <div id="patternBody">
+              <p class="section-label">Patterns we check</p>
+              <ul class="pattern-list" id="patternList"></ul>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/risk.js"></script>
+  <script src="js/call-check.js"></script>
+</body>
+</html>

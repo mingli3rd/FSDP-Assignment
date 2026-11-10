@@ -1,0 +1,73 @@
+{
+  "summary": {
+    "ranAt": "2026-11-05T01:11:44.128Z",
+    "model": "gpt-4o-mini",
+    "transcribeModel": "whisper-1",
+    "cases": 1,
+    "ran": 1,
+    "skipped": 0,
+    "errors": 0,
+    "accuracy": "0/1",
+    "jsonFormatValid": "1/1",
+    "avgResponseMs": 4734,
+    "totalCostUsd": 0.00567,
+    "costPerCheckUsd": 0.00567,
+    "pricesUsed": {
+      "inputPer1M": 0.15,
+      "outputPer1M": 0.6,
+      "transcribePerMinute": 0.006,
+      "assumedAudioMinutes": 0.5
+    }
+  },
+  "rows": [
+    {
+      "id": "I1",
+      "kind": "image",
+      "expected": "scam",
+      "got": "suspicious",
+      "correct": false,
+      "formatOk": true,
+      "ms": 4734,
+      "usage": {
+        "inputTokens": 37416,
+        "outputTokens": 95
+      },
+      "costUsd": 0.005669399999999999,
+      "final": {
+        "verdict": "suspicious",
+        "confidence": 0.9,
+        "tricks": [
+          "urgency: account will be suspended within 2 hours",
+          "phishing: verify your identity now"
+        ],
+        "ai_generated_signs": [],
+        "scam_type": "ai_phishing_message",
+        "safe_actions": [
+          "Hang up and call OCBC at 6363 3333.",
+          "Do not click on any links in the message.",
+          "Verify with a family member or boss using a saved contact number."
+        ]
+      },
+      "findings": [
+        {
+          "agent": "image",
+          "result": {
+            "verdict": "suspicious",
+            "confidence": 0.9,
+            "tricks": [
+              "urgency: account will be suspended within 2 hours",
+              "phishing: verify your identity now"
+            ],
+            "ai_generated_signs": [],
+            "scam_type": "ai_phishing_message",
+            "safe_actions": [
+              "Hang up and call OCBC at 6363 3333.",
+              "Do not click on any links in the message.",
+              "Verify with a family member or boss using a saved contact number."
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

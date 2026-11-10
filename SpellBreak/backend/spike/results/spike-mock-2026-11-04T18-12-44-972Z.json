@@ -1,0 +1,353 @@
+{
+  "summary": {
+    "ranAt": "2026-11-04T18:12:44.971Z",
+    "model": "mock",
+    "transcribeModel": "mock",
+    "cases": 11,
+    "ran": 7,
+    "skipped": 4,
+    "errors": 0,
+    "accuracy": "5/7",
+    "jsonFormatValid": "7/7",
+    "avgResponseMs": 0,
+    "totalCostUsd": 0,
+    "costPerCheckUsd": 0,
+    "pricesUsed": {
+      "inputPer1M": 0.15,
+      "outputPer1M": 0.6,
+      "transcribePerMinute": 0.006,
+      "assumedAudioMinutes": 0.5
+    }
+  },
+  "rows": [
+    {
+      "id": "T1",
+      "kind": "text",
+      "expected": "scam",
+      "got": "scam",
+      "correct": true,
+      "formatOk": true,
+      "ms": 1,
+      "usage": {
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      "costUsd": 0,
+      "final": {
+        "verdict": "scam",
+        "confidence": 0.9,
+        "tricks": [
+          "Urgency: asks for money right now",
+          "Secrecy: asks you not to tell anyone"
+        ],
+        "ai_generated_signs": [
+          "Mock mode - no real AI analysis"
+        ],
+        "scam_type": "voice_clone_family",
+        "safe_actions": [
+          "Do not transfer any money",
+          "Call the person on the number saved in your phone"
+        ]
+      },
+      "findings": [
+        {
+          "agent": "text",
+          "result": {
+            "verdict": "scam",
+            "confidence": 0.9,
+            "tricks": [
+              "Urgency: asks for money right now",
+              "Secrecy: asks you not to tell anyone"
+            ],
+            "ai_generated_signs": [
+              "Mock mode - no real AI analysis"
+            ],
+            "scam_type": "voice_clone_family",
+            "safe_actions": [
+              "Do not transfer any money",
+              "Call the person on the number saved in your phone"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "T2",
+      "kind": "text",
+      "expected": "scam",
+      "got": "scam",
+      "correct": true,
+      "formatOk": true,
+      "ms": 0,
+      "usage": {
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      "costUsd": 0,
+      "final": {
+        "verdict": "scam",
+        "confidence": 0.9,
+        "tricks": [
+          "Urgency: asks for money right now",
+          "Secrecy: asks you not to tell anyone"
+        ],
+        "ai_generated_signs": [
+          "Mock mode - no real AI analysis"
+        ],
+        "scam_type": "voice_clone_family",
+        "safe_actions": [
+          "Do not transfer any money",
+          "Call the person on the number saved in your phone"
+        ]
+      },
+      "findings": [
+        {
+          "agent": "text",
+          "result": {
+            "verdict": "scam",
+            "confidence": 0.9,
+            "tricks": [
+              "Urgency: asks for money right now",
+              "Secrecy: asks you not to tell anyone"
+            ],
+            "ai_generated_signs": [
+              "Mock mode - no real AI analysis"
+            ],
+            "scam_type": "voice_clone_family",
+            "safe_actions": [
+              "Do not transfer any money",
+              "Call the person on the number saved in your phone"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "T3",
+      "kind": "text",
+      "expected": "scam",
+      "got": "scam",
+      "correct": true,
+      "formatOk": true,
+      "ms": 0,
+      "usage": {
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      "costUsd": 0,
+      "final": {
+        "verdict": "scam",
+        "confidence": 0.9,
+        "tricks": [
+          "Urgency: asks for money right now",
+          "Secrecy: asks you not to tell anyone"
+        ],
+        "ai_generated_signs": [
+          "Mock mode - no real AI analysis"
+        ],
+        "scam_type": "voice_clone_family",
+        "safe_actions": [
+          "Do not transfer any money",
+          "Call the person on the number saved in your phone"
+        ]
+      },
+      "findings": [
+        {
+          "agent": "text",
+          "result": {
+            "verdict": "scam",
+            "confidence": 0.9,
+            "tricks": [
+              "Urgency: asks for money right now",
+              "Secrecy: asks you not to tell anyone"
+            ],
+            "ai_generated_signs": [
+              "Mock mode - no real AI analysis"
+            ],
+            "scam_type": "voice_clone_family",
+            "safe_actions": [
+              "Do not transfer any money",
+              "Call the person on the number saved in your phone"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "T4",
+      "kind": "text",
+      "expected": "scam",
+      "got": "safe",
+      "correct": false,
+      "formatOk": true,
+      "ms": 0,
+      "usage": {
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      "costUsd": 0,
+      "final": {
+        "verdict": "safe",
+        "confidence": 0.8,
+        "tricks": [],
+        "ai_generated_signs": [],
+        "scam_type": "none",
+        "safe_actions": [
+          "No action needed"
+        ]
+      },
+      "findings": [
+        {
+          "agent": "text",
+          "result": {
+            "verdict": "safe",
+            "confidence": 0.8,
+            "tricks": [],
+            "ai_generated_signs": [],
+            "scam_type": "none",
+            "safe_actions": [
+              "No action needed"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "T5",
+      "kind": "text",
+      "expected": "suspicious",
+      "got": "safe",
+      "correct": false,
+      "formatOk": true,
+      "ms": 0,
+      "usage": {
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      "costUsd": 0,
+      "final": {
+        "verdict": "safe",
+        "confidence": 0.8,
+        "tricks": [],
+        "ai_generated_signs": [],
+        "scam_type": "none",
+        "safe_actions": [
+          "No action needed"
+        ]
+      },
+      "findings": [
+        {
+          "agent": "text",
+          "result": {
+            "verdict": "safe",
+            "confidence": 0.8,
+            "tricks": [],
+            "ai_generated_signs": [],
+            "scam_type": "none",
+            "safe_actions": [
+              "No action needed"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "T6",
+      "kind": "text",
+      "expected": "safe",
+      "got": "safe",
+      "correct": true,
+      "formatOk": true,
+      "ms": 0,
+      "usage": {
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      "costUsd": 0,
+      "final": {
+        "verdict": "safe",
+        "confidence": 0.8,
+        "tricks": [],
+        "ai_generated_signs": [],
+        "scam_type": "none",
+        "safe_actions": [
+          "No action needed"
+        ]
+      },
+      "findings": [
+        {
+          "agent": "text",
+          "result": {
+            "verdict": "safe",
+            "confidence": 0.8,
+            "tricks": [],
+            "ai_generated_signs": [],
+            "scam_type": "none",
+            "safe_actions": [
+              "No action needed"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "T7",
+      "kind": "text",
+      "expected": "safe",
+      "got": "safe",
+      "correct": true,
+      "formatOk": true,
+      "ms": 0,
+      "usage": {
+        "inputTokens": 0,
+        "outputTokens": 0
+      },
+      "costUsd": 0,
+      "final": {
+        "verdict": "safe",
+        "confidence": 0.8,
+        "tricks": [],
+        "ai_generated_signs": [],
+        "scam_type": "none",
+        "safe_actions": [
+          "No action needed"
+        ]
+      },
+      "findings": [
+        {
+          "agent": "text",
+          "result": {
+            "verdict": "safe",
+            "confidence": 0.8,
+            "tricks": [],
+            "ai_generated_signs": [],
+            "scam_type": "none",
+            "safe_actions": [
+              "No action needed"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "I1",
+      "kind": "image",
+      "skipped": "file not found: images/fake-bank-sms.png"
+    },
+    {
+      "id": "I2",
+      "kind": "image",
+      "skipped": "file not found: images/deepfake-frame.jpg"
+    },
+    {
+      "id": "V1",
+      "kind": "voice",
+      "skipped": "file not found: audio/voice-clone-sample.mp3"
+    },
+    {
+      "id": "M1",
+      "kind": "multi",
+      "skipped": "file not found: images/deepfake-frame.jpg"
+    }
+  ]
+}

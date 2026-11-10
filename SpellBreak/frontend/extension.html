@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Extension - SpellBreak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body data-page="extension" data-crumb="Extension settings">
+  <div class="shell">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+
+      <main class="content">
+        <div class="page-head">
+          <h1>Choose your extension features</h1>
+          <p>The extension runs inside OCBC’s own app and website. It only checks the action you are taking at that moment, and you can turn any feature off.</p>
+        </div>
+
+        <div class="grid-main-side">
+          <div class="stack">
+            <section class="panel" aria-labelledby="featTitle">
+              <h2 id="featTitle">Features</h2>
+              <div class="feature-list">
+                <label class="feature">
+                  <span class="icon-tile" data-icon="pause"></span>
+                  <span class="grow"><strong>Smart Pause <span class="badge clear plain">Recommended</span></strong><span>Pauses unusual transfers and explains why, so you can check first.</span></span>
+                  <span class="switch"><input type="checkbox" checked data-feature="Smart Pause" /><span class="track"></span></span>
+                </label>
+                <label class="feature">
+                  <span class="icon-tile" data-icon="scan"></span>
+                  <span class="grow"><strong>Spellbreak inside payments</strong><span>When you tap “Verify first”, check the message or call without leaving the payment.</span></span>
+                  <span class="switch"><input type="checkbox" checked data-feature="Spellbreak inside payments" /><span class="track"></span></span>
+                </label>
+                <label class="feature">
+                  <span class="icon-tile" data-icon="qr"></span>
+                  <span class="grow"><strong>QR payment check</strong><span>Asks what you’re paying for, and pauses if the QR pays the wrong kind of account.</span></span>
+                  <span class="switch"><input type="checkbox" checked data-feature="QR payment check" /><span class="track"></span></span>
+                </label>
+                <label class="feature">
+                  <span class="icon-tile" data-icon="key"></span>
+                  <span class="grow"><strong>Login Code Guard</strong><span>Hides your login code and shows where the login is coming from first.</span></span>
+                  <span class="switch"><input type="checkbox" checked data-feature="Login Code Guard" /><span class="track"></span></span>
+                </label>
+                <label class="feature">
+                  <span class="icon-tile" data-icon="report"></span>
+                  <span class="grow"><strong>Statement Shield <span class="badge neutral plain">Nice to have</span></strong><span>Asks who a statement is for before you download it.</span></span>
+                  <span class="switch"><input type="checkbox" data-feature="Statement Shield" /><span class="track"></span></span>
+                </label>
+                <label class="feature">
+                  <span class="icon-tile" data-icon="lock"></span>
+                  <span class="grow"><strong>Second Session Alarm <span class="badge neutral plain">Nice to have</span></strong><span>Alerts you if a second login session starts on your account.</span></span>
+                  <span class="switch"><input type="checkbox" data-feature="Second Session Alarm" /><span class="track"></span></span>
+                </label>
+              </div>
+            </section>
+
+            <section class="panel" aria-labelledby="pauseTitle">
+              <h2 id="pauseTitle">When should Smart Pause step in?</h2>
+              <p class="muted" style="margin-top:6px">Ollie only pauses when risk signals stack up, so everyday payments stay fast.</p>
+              <div class="signal-list">
+                <label class="signal"><input type="checkbox" checked /> New payee</label>
+                <label class="signal"><input type="checkbox" checked /> Amount far above your usual</label>
+                <label class="signal"><input type="checkbox" checked /> Large share of your balance</label>
+                <label class="signal"><input type="checkbox" checked disabled /> Payee reported by other customers <span class="badge scam plain">Always pauses</span></label>
+                <label class="signal"><input type="checkbox" checked /> Payment started from a chat link</label>
+              </div>
+              <p class="section-label" id="thresholdLabel">Signals needed before pausing</p>
+              <div class="segmented" role="radiogroup" aria-labelledby="thresholdLabel" id="threshold">
+                <button type="button" role="radio" aria-pressed="false" data-n="1">1 signal</button>
+                <button type="button" role="radio" aria-pressed="true" data-n="2">2 signals</button>
+                <button type="button" role="radio" aria-pressed="false" data-n="3">3 signals</button>
+              </div>
+              <p class="hint" id="thresholdHint" style="margin-top:10px">We suggest 2. A reported payee always pauses.</p>
+            </section>
+          </div>
+
+          <aside class="stack">
+            <section class="panel" aria-labelledby="connTitle">
+              <h2 id="connTitle">Connected to</h2>
+              <div class="conn-list">
+                <div class="list-row">
+                  <span class="icon-tile" data-icon="phone"></span>
+                  <div class="grow"><div class="title">OCBC app</div><div class="meta">Last check 2 min ago</div></div>
+                  <span class="badge clear">Connected</span>
+                </div>
+                <div class="list-row">
+                  <span class="icon-tile" data-icon="extension"></span>
+                  <div class="grow"><div class="title">OCBC website</div><div class="meta">Last check today</div></div>
+                  <span class="badge clear">Connected</span>
+                </div>
+              </div>
+            </section>
+            <div data-ollie id="pausePreview">With 2 signals, I’d pause a transfer to a new payee that’s far above your usual amount.</div>
+            <button class="btn btn-primary btn-lg btn-full" type="button" id="saveExt">Save changes</button>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/extension.js"></script>
+</body>
+</html>

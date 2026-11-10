@@ -3,60 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Register - SpellBreak</title>
-  <link rel="stylesheet" href="css/main.css" />
+  <title>Create account - SpellBreak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app.css" />
 </head>
 <body>
+  <div class="auth">
+    <aside class="auth-side">
+      <div>
+        <a class="brand" href="index.html"><span class="ollie" style="width:38px;height:38px" id="brandOllie"></span><span><span class="brand-name">SpellBreak</span><span class="brand-sub">AI scam protection with OCBC</span></span></a>
+        <h1>Your second pair of eyes on every payment.</h1>
+        <p>AI can copy a voice, fake a video call and write a perfect bank SMS. Ollie helps you spot it before your money moves.</p>
+        <span class="ollie ollie-big" id="bigOllie"></span>
+      </div>
+      <p class="fineprint">Prototype for the OCBC Digital Trust challenge. Synthetic data only.</p>
+    </aside>
 
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="logo">SpellBreak</a>
-      <div class="nav-auth" id="navAuth"></div>
-    </div>
-  </header>
-
-  <main>
-    <div class="container">
-      <div class="card auth-card">
-        <h1>Create your account</h1>
-        <p class="subtitle">Free to join. Learn to spot AI voice-clone and deepfake scams.</p>
+    <main class="auth-form">
+      <div class="auth-card">
+        <h2>Create your account</h2>
+        <p class="lead">It takes a minute. Ollie starts protecting you straight away.</p>
 
         <form id="registerForm" novalidate>
           <div class="field">
-            <label for="name">Name</label>
-            <input type="text" id="name" placeholder="Your full name" autocomplete="name" required />
+            <label for="name">Full name</label>
+            <input class="input" type="text" id="name" placeholder="Your full name" autocomplete="name" required />
           </div>
-
           <div class="field">
             <label for="email">Email</label>
-            <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required />
+            <input class="input" type="email" id="email" placeholder="you@example.com" autocomplete="email" required />
           </div>
-
           <div class="field">
             <label for="password">Password</label>
-            <input type="password" id="password" placeholder="At least 8 characters" autocomplete="new-password" required />
+            <input class="input" type="password" id="password" placeholder="At least 8 characters" autocomplete="new-password" required />
           </div>
-
           <div class="field">
             <label for="confirmPassword">Confirm password</label>
-            <input type="password" id="confirmPassword" placeholder="Re-enter your password" autocomplete="new-password" required />
+            <input class="input" type="password" id="confirmPassword" placeholder="Re-enter your password" autocomplete="new-password" required />
           </div>
-
-          <button type="submit" class="btn btn-primary btn-full" id="submitBtn">Create account</button>
-
+          <button type="submit" class="btn btn-primary btn-lg btn-full" id="submitBtn">Create account</button>
           <p id="message" class="form-message" role="status" aria-live="polite"></p>
         </form>
 
         <p class="switch-line">Already have an account? <a href="login.html">Log in</a></p>
       </div>
-    </div>
-  </main>
-
-  <footer class="site-footer">
-    SpellBreak prototype · Synthetic data only
-  </footer>
+    </main>
+  </div>
 
   <script src="js/main.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.getElementById("brandOllie").innerHTML = ollieSvg();
+    document.getElementById("bigOllie").innerHTML = ollieSvg();
+  </script>
   <script src="js/register.js"></script>
 </body>
 </html>

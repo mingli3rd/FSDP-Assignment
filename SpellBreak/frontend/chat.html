@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat with Ollie - SpellBreak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body data-page="chat" data-crumb="Chat with Ollie">
+  <div class="shell">
+    <aside class="sidebar" id="sidebar"></aside>
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+
+      <main class="content">
+        <div class="grid-main-side chat-layout">
+          <section class="panel chat" aria-labelledby="chatTitle">
+            <header class="chat-head">
+              <span id="chatOllie"></span>
+              <div class="grow">
+                <h1 id="chatTitle" class="chat-title">Ollie</h1>
+                <p class="muted small">Ask me anything about a message, call or payment.</p>
+              </div>
+              <span class="badge clear">Online</span>
+            </header>
+
+            <div class="messages" id="messages" aria-live="polite"></div>
+
+            <form class="composer" id="composer">
+              <label for="chatInput" class="sr-only">Message Ollie</label>
+              <input class="input" id="chatInput" autocomplete="off" placeholder="Ask Ollie about a message, call or payment" />
+              <button class="btn btn-primary" type="submit" aria-label="Send" data-icon="send"></button>
+            </form>
+          </section>
+
+          <aside class="stack">
+            <section class="panel" aria-labelledby="teamTitle">
+              <h2 id="teamTitle">Ollie’s team</h2>
+              <p class="muted small" style="margin-top:6px">You talk to Ollie. Behind the scenes, Ollie hands each job to a specialist agent.</p>
+              <ul class="agents" id="agents">
+                <li data-agent="Guard"><span class="icon-tile" data-icon="pause"></span><div><strong>Guard Agent</strong><span>Runs Smart Pause on risky payments</span></div></li>
+                <li data-agent="Spellbreak"><span class="icon-tile" data-icon="scan"></span><div><strong>Spellbreak Agent</strong><span>Checks text, images, QR codes, voice and video</span></div></li>
+                <li data-agent="Verify"><span class="icon-tile" data-icon="verify"></span><div><strong>Verify Agent</strong><span>Runs the official verification journey</span></div></li>
+                <li data-agent="Explainer"><span class="icon-tile" data-icon="info"></span><div><strong>Explainer Agent</strong><span>Explains risks and safe actions in plain words</span></div></li>
+                <li data-agent="Report"><span class="icon-tile" data-icon="report"></span><div><strong>Report Agent</strong><span>Saves evidence and sends cases to OCBC</span></div></li>
+              </ul>
+            </section>
+            <section class="panel" aria-labelledby="tryTitle">
+              <h2 id="tryTitle">Try asking</h2>
+              <div class="try-list" id="tryList">
+                <button type="button" class="chip">Is this SMS from OCBC real?</button>
+                <button type="button" class="chip">My “son” called from a new number</button>
+                <button type="button" class="chip">How do I check a QR code?</button>
+              </div>
+            </section>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/chat.js"></script>
+</body>
+</html>
