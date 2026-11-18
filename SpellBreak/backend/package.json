@@ -9,7 +9,8 @@
     "test": "jest",
     "docs": "node swagger.js",
     "spike": "node spike/runSpike.js",
-    "mobile": "node --watch mobile-server.js"
+    "mobile": "node --watch mobile-server.js",
+    "seed:demo": "node scripts/seedDemoUsers.js"
   },
   "keywords": [],
   "author": "",

@@ -50,9 +50,23 @@
             </div>
 
             <div class="mode-pane" data-pane="voice" hidden>
-              <label class="dropzone" for="mediaFile" style="margin-top:20px">
-                <span class="icon-tile" data-icon="mic"></span>
-                <strong>Drop a voice note or video</strong>
+              <p class="section-label" style="margin-top:20px">Recording to check</p>
+              <button type="button" class="sample-call" id="sampleCall" aria-pressed="true">
+                <span class="thumb" id="sampleThumb"></span>
+                <span class="grow">
+                  <span class="title">WhatsApp video call with “David”</span>
+                  <span class="meta">Screen recording, 0:42. Demo sample, no real person.</span>
+                </span>
+                <span class="badge info plain" id="sampleBadge">Selected</span>
+              </button>
+
+              <div class="field" style="margin-top:16px">
+                <label for="callNote">What happened</label>
+                <textarea class="textarea textarea-short" id="callNote">My boss David video called me on WhatsApp and asked me to pay a vendor S$4,800 urgently. He said he’d pay me back tomorrow.</textarea>
+              </div>
+
+              <label class="dropzone dropzone-small" for="mediaFile" style="margin-top:16px">
+                <strong>Or use your own voice note or video</strong>
                 <span class="muted small">MP3, M4A, WAV or MP4, up to 25 MB</span>
                 <input type="file" id="mediaFile" accept="audio/*,video/*" class="sr-only" />
               </label>
@@ -67,6 +81,7 @@
               <button type="button" class="chip" aria-pressed="false">Email</button>
               <button type="button" class="chip" aria-pressed="false">Carousell</button>
               <button type="button" class="chip" aria-pressed="false">Phone call</button>
+              <button type="button" class="chip" aria-pressed="false">Video call</button>
             </div>
 
             <div class="form-foot">
@@ -96,6 +111,7 @@
   <script src="js/main.js"></script>
   <script src="js/app.js"></script>
   <script src="js/risk.js"></script>
+  <script src="js/deepfake-demo.js"></script>
   <script src="js/scam-check.js"></script>
 </body>
 </html>

@@ -60,8 +60,23 @@ async function getUserById(id) {
   }
 }
 
+// Used by scripts/seedDemoUsers.js to make the demo staff account
+async function setUserRole(id, role) {
+  try {
+    const connection = await sql.connect(dbConfig);
+    const request = connection.request();
+    request.input("id", sql.Int, id);
+    request.input("role", sql.VarChar, role);
+    await request.query(`UPDATE Users SET role = @role WHERE id = @id`);
+  } catch (error) {
+    console.error("Database error:", error);
+    throw error;
+  }
+}
+
 module.exports = {
   createUser,
+  setUserRole,
   getUserAuthByEmail,
   getUserById,
 };

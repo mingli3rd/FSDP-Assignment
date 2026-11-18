@@ -399,3 +399,64 @@ button { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* =========================================================
+   Deepfake video-call scenario (E4 / E5)
+   ========================================================= */
+
+/* E4: the shared call recording */
+.video-card { display: flex; align-items: center; gap: 12px; }
+.video-card .title { font-weight: 700; font-size: 0.95rem; }
+.video-card .meta { font-size: 0.84rem; color: var(--ink-3); }
+.thumb { position: relative; width: 112px; flex-shrink: 0; border-radius: 10px; overflow: hidden; line-height: 0; }
+.thumb svg { width: 100%; height: auto; }
+.thumb .play {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(255,255,255,0.9); color: var(--ink);
+}
+.thumb .play svg { width: 14px; height: 14px; margin-left: 2px; fill: currentColor; }
+.thumb .duration {
+  position: absolute; right: 5px; bottom: 5px; padding: 1px 5px; border-radius: 4px;
+  background: rgba(0,0,0,0.7); color: #fff; font-size: 0.68rem; font-weight: 700; line-height: 1.4;
+}
+
+/* E4: live progress of the agents */
+.scan-progress { margin-top: 16px; }
+.scan-progress ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.scan-progress li { display: flex; align-items: center; gap: 10px; text-align: left; font-size: 0.92rem; font-weight: 600; color: var(--ink-3); }
+.scan-progress .dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line-strong); flex-shrink: 0; position: relative; }
+.scan-progress li.active { color: var(--ink); }
+.scan-progress li.active .dot { border-color: var(--red); border-top-color: transparent; animation: spin 0.7s linear infinite; }
+.scan-progress li.done { color: var(--ink); }
+.scan-progress li.done .dot { border-color: var(--clear); background: var(--clear); }
+.scan-progress li.done .dot::after { content: ""; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* E5: scan rows */
+.scan-rows { display: grid; gap: 14px; }
+.scan-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.scan-name { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; }
+.scan-name svg { width: 18px; height: 18px; color: var(--ink-3); }
+.scan-bar { height: 7px; margin-top: 8px; border-radius: var(--r-pill); background: var(--line); overflow: hidden; }
+.scan-bar i { display: block; height: 100%; border-radius: inherit; }
+.scan-bar i.scam { background: var(--scam); }
+.scan-bar i.signs { background: var(--signs); }
+
+/* E5: flagged moments */
+.frames { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.frame { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; }
+.frame-img { position: relative; line-height: 0; }
+.frame-img svg { width: 100%; height: auto; }
+.frame .stamp {
+  position: absolute; left: 6px; top: 6px; padding: 1px 6px; border-radius: 4px;
+  background: var(--scam); color: #fff; font-size: 0.7rem; font-weight: 700; line-height: 1.5;
+}
+.frame figcaption { padding: 8px 10px 10px; font-size: 0.8rem; font-weight: 600; line-height: 1.35; }
+
+/* E5: voice + transcript */
+.voice-signs { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.voice-signs li { display: flex; gap: 10px; font-size: 0.92rem; }
+.voice-signs svg { width: 18px; height: 18px; color: var(--scam); flex-shrink: 0; margin-top: 2px; }
+.said { margin: 0; padding: 12px 14px; border-left: 3px solid var(--red); background: var(--paper); border-radius: 0 var(--r-md) var(--r-md) 0; font-size: 0.93rem; line-height: 1.55; }
+.tricks strong { font-size: 0.93rem; }

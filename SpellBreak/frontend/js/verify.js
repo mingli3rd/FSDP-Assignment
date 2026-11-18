@@ -74,6 +74,10 @@ document.querySelectorAll("#reqTabs [data-who]").forEach((tab) => {
   });
 });
 
+// verify.html?who=boss opens on that contact (used by the deepfake demo result)
+const whoParam = new URLSearchParams(location.search).get("who");
+if (CONTACTS[whoParam]) document.querySelector(`#reqTabs [data-who="${whoParam}"]`).click();
+
 document.getElementById("callSaved").addEventListener("click", () =>
   showToast(`Calling ${CONTACTS[who].name} on the number you saved (demo)`)
 );

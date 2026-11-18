@@ -2,6 +2,8 @@
 // 1. Tries the real AI: POST /api/checks (to be built, returns the scamSchema JSON)
 // 2. If that route isn't there yet, runs a local demo check so the page still works.
 //    Demo results are labelled as such on screen.
+// 3. The "Voice or video" tab runs the deepfake video-call demo (js/deepfake-demo.js)
+//    until the deepfake scan service connects in Sprint 2.
 
 const form = document.getElementById("checkForm");
 const checkBtn = document.getElementById("checkBtn");
@@ -43,6 +45,49 @@ function wireFile(inputId, nameId) {
 const imageInput = wireFile("imageFile", "imageName");
 const mediaInput = wireFile("mediaFile", "mediaName");
 
+// ---------- Voice or video: the deepfake demo call (js/deepfake-demo.js) ----------
+const sampleCall = document.getElementById("sampleCall");
+const sampleBadge = document.getElementById("sampleBadge");
+document.getElementById("sampleThumb").innerHTML = sampleThumbHtml();
+
+function useSample(on) {
+  sampleCall.setAttribute("aria-pressed", String(on));
+  sampleBadge.hidden = !on;
+  if (on) {
+    mediaInput.value = "";
+    document.getElementById("mediaName").hidden = true;
+    sourceChips.forEach((c) => c.setAttribute("aria-pressed", String(c.textContent === "Video call")));
+  }
+}
+sampleCall.addEventListener("click", () => useSample(true));
+mediaInput.addEventListener("change", () => useSample(!mediaInput.files[0]));
+
+// Opening the tab picks the demo call (unless they chose their own file)
+document.querySelector('[data-mode="voice"]').addEventListener("click", () => {
+  if (!mediaInput.files[0]) useSample(true);
+});
+
+// scam-check.html?mode=video opens straight on the deepfake demo
+if (/^(video|voice)$/.test(new URLSearchParams(location.search).get("mode") || "")) {
+  document.querySelector('[data-mode="voice"]').click();
+}
+
+function runVideoDemo() {
+  checkBtn.disabled = true;
+  checkBtn.textContent = "Ollie is checking…";
+  resultEmpty.hidden = true;
+  resultBody.hidden = false;
+  if (window.matchMedia("(max-width: 1080px)").matches) {
+    document.getElementById("result").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  runDeepfakeScan(resultBody, () => {
+    resultBody.innerHTML = deepfakeResultHtml();
+    renderOllieTips();
+    checkBtn.disabled = false;
+    checkBtn.textContent = "Check again";
+  });
+}
+
 // Going back to editing hides the highlighted preview
 previewEl.addEventListener("click", (e) => {
   if (e.target.matches("mark.flag")) return;
@@ -55,11 +100,19 @@ previewEl.addEventListener("click", (e) => {
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
+  // Voice or video isn't on the API yet (SCRUM-35 / SCRUM-55), so this tab runs the deepfake demo
+  if (mode === "voice") {
+    if (mediaInput.files[0]) {
+      return showToast("Checking your own recordings connects in Sprint 2. Pick the demo call to see how it works.");
+    }
+    return runVideoDemo();
+  }
+
   const text = messageEl.value.trim();
-  const file = mode === "image" ? imageInput.files[0] : mode === "voice" ? mediaInput.files[0] : null;
+  const file = mode === "image" ? imageInput.files[0] : null;
 
   if (mode === "text" && !text) return showToast("Paste a message or link first");
-  if (mode !== "text" && !file) return showToast(mode === "image" ? "Choose a screenshot or QR code first" : "Choose a voice note or video first");
+  if (mode === "image" && !file) return showToast("Choose a screenshot or QR code first");
 
   checkBtn.disabled = true;
   checkBtn.textContent = "Ollie is checking…";
@@ -215,17 +268,6 @@ function demoCheck(currentMode, text) {
       safe_actions: ["Call OCBC on an official number", "Report it"],
     };
   }
-  if (currentMode === "voice") {
-    return {
-      verdict: "scam",
-      confidence: 0.86,
-      tricks: ["Family emergency: “Ma, I got into an accident”", "Money request: $3,000 now", "Secrecy: “don’t tell Dad”"],
-      ai_generated_signs: ["Words match a common voice-clone script", "Audio not checked acoustically - transcript only"],
-      scam_type: "voice_clone_family",
-      safe_actions: ["Call your family member on the number saved in your phone", "Report it"],
-    };
-  }
-
   const flags = findFlags(text);
   const n = flags.length;
   const verdict = n >= 3 ? "scam" : n >= 1 ? "suspicious" : "safe";
