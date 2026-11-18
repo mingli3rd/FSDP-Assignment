@@ -26,12 +26,13 @@ function meterHtml(levelKey) {
   </div>`;
 }
 
-function verdictHtml(levelKey, confidence) {
+// The confidence % is no longer shown to customers (it's still saved in the database),
+// so the second argument is ignored. Kept so existing calls don't break.
+function verdictHtml(levelKey) {
   const level = LEVELS[levelKey];
-  const conf = typeof confidence === "number" ? `${Math.round(confidence * 100)}% confidence` : "";
   return `<div class="verdict ${level.key}">
     <span class="v-icon">${icon(level.icon)}</span>
-    <div><div class="v-title">${level.label}</div><div class="v-sub num">${conf}</div></div>
+    <div><div class="v-title">${level.label}</div></div>
   </div>`;
 }
 

@@ -1,68 +1,96 @@
-// The fixed JSON format every agent must return (SCRUM-40 acceptance criterion).
-// Used as an OpenAI "structured output" schema, so the model is forced to
-// return exactly these fields - no free text we have to parse.
+// The fixed format every AI agent must return (SCRUM-17).
+// 1. scamResultJsonSchema -> sent to OpenAI so the model is forced into this shape
+// 2. ScamResult (zod)     -> validates the reply in our own code before we trust it
 
-const VERDICTS = ["scam", "suspicious", "safe"];
+const { z } = require("zod");
 
+// The 3 levels from the flowchart. There is deliberately no "safe":
+// we can only say we found no COMMON signs, never that something is safe.
+const LEVELS = ["likely_scam", "some_signs", "no_common_signs"];
+
+// Keep these names the same in SCRUM-28 (the scam library) so matching is a simple lookup
 const SCAM_TYPES = [
-  "voice_clone_family",   // cloned voice of a child/parent asking for money
-  "voice_clone_bank",     // AI voice pretending to be OCBC / bank staff
+  "voice_clone_family",   // cloned voice of a family member asking for money
+  "voice_clone_bank",     // AI voice pretending to be bank staff
   "deepfake_executive",   // deepfake boss / CEO asking for a payment
   "deepfake_government",  // deepfake police / MAS / government officer
-  "ai_phishing_message",  // AI-written text pretending to be a bank / company
-  "ai_generated_image",   // fake screenshot, ID, receipt or photo made by AI
-  "investment_deepfake",  // deepfake celebrity / expert promoting an investment
+  "deepfake_investment",  // deepfake celebrity or expert promoting an investment
+  "ai_phishing_message",  // AI-written message pretending to be a bank or company
+  "ai_generated_image",   // fake screenshot, receipt, ID or product photo made by AI
+  "ecommerce_scam",       // fake seller, pay first, never delivers
+  "job_scam",             // pay to work / top-up tasks
   "other",
-  "none",                 // use with verdict "safe"
+  "none",                 // only with level "no_common_signs"
 ];
 
-const scamResultSchema = {
+// ---------- zod: checks the reply in our code ----------
+const ScamResult = z.object({
+  level: z.enum(LEVELS),
+  confidence: z.number().min(0).max(1),
+  claimed_identity: z.string(), // who the sender says they are, "" if unclear
+  requested_action: z.string(), // what they want you to do, "" if nothing
+  tricks: z.array(
+    z.object({
+      name: z.string(),  // e.g. "Urgency"
+      quote: z.string(), // the exact words from the content
+    })
+  ),
+  extracted: z.object({
+    links: z.array(z.string()),
+    phone_numbers: z.array(z.string()),
+    bank_accounts: z.array(z.string()),
+  }),
+  scam_type: z.enum(SCAM_TYPES),
+  ai_indicators: z.object({
+    public_figure_endorsement: z.boolean(), // "as seen with [celebrity / minister]"
+    claims_known_person: z.boolean(),       // pretends to be family, boss, friend
+    personal_details_used: z.boolean(),     // uses your name, address, etc. to seem real
+    ai_generated_signs: z.array(z.string()),
+  }),
+  safe_actions: z.array(z.string()),
+});
+
+// ---------- JSON schema: the same shape, in the format OpenAI needs ----------
+const str = { type: "string" };
+const strArray = { type: "array", items: str };
+const strict = (properties) => ({
   type: "object",
   additionalProperties: false,
-  required: ["verdict", "confidence", "tricks", "ai_generated_signs", "scam_type", "safe_actions"],
-  properties: {
-    verdict: { type: "string", enum: VERDICTS },
-    confidence: {
-      type: "number",
-      description: "0 to 1. How sure the agent is about the verdict.",
-    },
-    tricks: {
-      type: "array",
-      description: "Manipulation tricks used, in plain English (e.g. 'urgency: pay before 5pm').",
-      items: { type: "string" },
-    },
-    ai_generated_signs: {
-      type: "array",
-      description: "Signs the content was made or altered by AI. Empty array if none found.",
-      items: { type: "string" },
-    },
-    scam_type: { type: "string", enum: SCAM_TYPES },
-    safe_actions: {
-      type: "array",
-      description: "2-4 concrete next steps for the customer, e.g. 'Hang up and call OCBC at 6363 3333'.",
-      items: { type: "string" },
-    },
-  },
-};
+  required: Object.keys(properties),
+  properties,
+});
 
-// Light check used by the spike runner to confirm every response matches the format
-function isValidResult(result) {
-  if (!result || typeof result !== "object") return false;
-  return (
-    VERDICTS.includes(result.verdict) &&
-    typeof result.confidence === "number" &&
-    result.confidence >= 0 &&
-    result.confidence <= 1 &&
-    Array.isArray(result.tricks) &&
-    Array.isArray(result.ai_generated_signs) &&
-    SCAM_TYPES.includes(result.scam_type) &&
-    Array.isArray(result.safe_actions)
-  );
+const scamResultJsonSchema = strict({
+  level: { type: "string", enum: LEVELS },
+  confidence: { type: "number", description: "0 to 1" },
+  claimed_identity: str,
+  requested_action: str,
+  tricks: { type: "array", items: strict({ name: str, quote: str }) },
+  extracted: strict({ links: strArray, phone_numbers: strArray, bank_accounts: strArray }),
+  scam_type: { type: "string", enum: SCAM_TYPES },
+  ai_indicators: strict({
+    public_figure_endorsement: { type: "boolean" },
+    claims_known_person: { type: "boolean" },
+    personal_details_used: { type: "boolean" },
+    ai_generated_signs: strArray,
+  }),
+  safe_actions: strArray,
+});
+
+// Returns { ok: true, data } or { ok: false, error } - never throws
+function parseScamResult(raw) {
+  const result = ScamResult.safeParse(raw);
+  if (result.success) return { ok: true, data: result.data };
+  return {
+    ok: false,
+    error: result.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; "),
+  };
 }
 
 module.exports = {
-  VERDICTS,
+  LEVELS,
   SCAM_TYPES,
-  scamResultSchema,
-  isValidResult,
+  ScamResult,
+  scamResultJsonSchema,
+  parseScamResult,
 };

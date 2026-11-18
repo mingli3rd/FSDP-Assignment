@@ -2,7 +2,8 @@
 // A tiny router swaps screens inside the phone. All data is synthetic.
 //
 // Flows:
-//   Transfer:   transfer (E2) -> Smart Pause sheet (E3) -> verify (E4) -> result (E5)
+//   Transfer:   a deepfake "boss" on a video call asks for an urgent payment:
+//               transfer (E2) -> Smart Pause sheet (E3) -> verify (E4: the call recording) -> deepfake scan (E5)
 //   QR payment: scan (E6) -> purpose sheet -> qr-mismatch (E7)
 //   Login:      onetoken (E8)
 //   Statements: statements (E9) -> purpose sheet -> statement-stop (E10)
@@ -36,6 +37,10 @@ const ICONS = {
   report: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Z"/><path d="M14 3v6h6"/><path d="M8 13h8M8 17h5"/>',
   download: '<path d="M12 4v12M7 11l5 5 5-5"/><path d="M4 20h16"/>',
   phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+  video: '<rect x="2" y="6" width="14" height="12" rx="2"/><path d="m16 10 6-3v10l-6-3Z"/>',
+  play: '<path d="M8 5v14l11-7Z"/>',
+  mic: '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+  text: '<path d="M4 6h16M4 12h16M4 18h10"/>',
 };
 function icon(name) {
   return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name] || ""}</svg>`;
@@ -162,7 +167,7 @@ const SCREENS = {
     },
   },
 
-  // E2
+  // E2  (scenario: a deepfake "boss" on a WhatsApp video call asks for an urgent vendor payment)
   transfer: {
     code: "E2",
     title: "Transfer",
@@ -171,7 +176,7 @@ const SCREENS = {
     render: () => `
       <div class="card">
         <div class="field-label">To</div>
-        <div class="payee" style="margin-top:8px"><span class="avatar">JT</span><div class="grow"><div class="title" style="font-weight:700">J. Tan</div><div class="meta num">DBS ••• 4471</div></div><span class="badge signs">New payee</span></div>
+        <div class="payee" style="margin-top:8px"><span class="avatar">AT</span><div class="grow"><div class="title" style="font-weight:700">Apex Trading Pte Ltd</div><div class="meta num">UOB ••• 2291</div></div><span class="badge signs">New payee</span></div>
       </div>
       <div class="card">
         <div class="field-label">Amount</div>
@@ -179,7 +184,7 @@ const SCREENS = {
       </div>
       <div class="card">
         <div class="row"><div class="grow"><div class="field-label">From</div><div class="title">360 Account</div></div><div class="meta num" style="text-align:right">Available<br>S$7,950.12</div></div>
-        <div class="row"><div class="grow"><div class="field-label">Reference</div><div class="title">Concert tickets</div></div></div>
+        <div class="row"><div class="grow"><div class="field-label">Reference</div><div class="title">Vendor payment for David</div></div></div>
       </div>
       ${state.on ? `<div class="guard-note">${ollie()}<span>Ollie checks unusual transfers before they go.</span></div>` : ""}
       <div class="btn-stack"><button type="button" class="btn btn-primary" id="transferNow">Transfer now</button></div>`,
@@ -191,63 +196,87 @@ const SCREENS = {
     },
   },
 
-  // E4
+  // E4  Verify first: the customer shares the screen recording of the video call
   verify: {
     code: "E4",
     title: "Verify first",
     back: "transfer",
     tab: "pay",
     render: () => `
-      ${tip("Show me what made you want to pay. I’ll check it for scam tricks and AI signs.")}
+      ${tip("Got this request on a call? Share the recording and I’ll check if the face or voice was made by AI.")}
       <div class="chips" role="group" aria-label="What are you checking?" style="margin-top:16px" id="kinds">
-        <button type="button" class="chip" aria-pressed="true">Text or link</button>
-        <button type="button" class="chip" aria-pressed="false">Screenshot or QR</button>
-        <button type="button" class="chip" aria-pressed="false">Voice note</button>
-        <button type="button" class="chip" aria-pressed="false">Video</button>
+        <button type="button" class="chip" aria-pressed="false" data-kind="text">Text or link</button>
+        <button type="button" class="chip" aria-pressed="false" data-kind="image">Screenshot</button>
+        <button type="button" class="chip" aria-pressed="false" data-kind="voice">Voice note</button>
+        <button type="button" class="chip" aria-pressed="true" data-kind="video">Video call</button>
       </div>
       <div class="card" style="margin-top:14px">
-        <div class="paste-src">Pasted from Telegram</div>
-        <div class="paste" id="pasted">Hi! 2 VIP tickets for Saturday, S$4,800. Many people waiting, pay now by PayNow to lock in. Can’t meet, will send e-tickets after payment.</div>
-        <div class="attachment" id="attachment">${icon("image")}<span>ticket-photo.jpg attached</span><button type="button" id="removeAttachment">Remove</button></div>
+        <div class="video-card" id="videoCard">
+          <div class="thumb">${frameSvg("none")}<span class="play">${icon("play")}</span><span class="duration num">0:42</span></div>
+          <div class="grow"><div class="title">WhatsApp video call with “David”</div><div class="meta">Screen recording, 0:42</div></div>
+        </div>
+        <div class="paste-src" style="margin-top:14px">What happened</div>
+        <div class="paste">My boss David video called me on WhatsApp and asked me to pay a vendor S$4,800 urgently. He said he’d pay me back tomorrow.</div>
       </div>
-      <div class="btn-stack"><button type="button" class="btn btn-primary" id="checkIt">Check it</button></div>`,
+      <div id="checkArea">
+        <div class="btn-stack"><button type="button" class="btn btn-primary" id="checkIt">Check the video</button></div>
+      </div>`,
     mount(view) {
       view.querySelectorAll("#kinds .chip").forEach((chip) =>
-        chip.addEventListener("click", () => view.querySelectorAll("#kinds .chip").forEach((c) => c.setAttribute("aria-pressed", String(c === chip))))
+        chip.addEventListener("click", () => {
+          if (chip.dataset.kind !== "video") return toast("This demo shows the video call check");
+        })
       );
-      $("#removeAttachment", view).addEventListener("click", () => { $("#attachment", view).remove(); session.photo = false; });
-      $("#checkIt", view).addEventListener("click", async (e) => {
-        e.currentTarget.disabled = true;
-        e.currentTarget.textContent = "Ollie is checking…";
-        session.result = (await checkWithApi($("#pasted", view).textContent)) || demoResult();
-        go("result");
-      });
+      $("#checkIt", view).addEventListener("click", () => runDeepfakeScan($("#checkArea", view)));
     },
   },
 
-  // E5
+  // E5  Deepfake scan result
   result: {
     code: "E5",
-    title: "Spellbreak result",
+    title: "Deepfake scan",
     back: "verify",
     tab: "pay",
     render: () => {
-      const r = session.result || demoResult();
-      const level = { scam: ["scam", "Likely scam", "x"], suspicious: ["signs", "Some scam signs", "alert"], safe: ["clear", "No common scam signs", "check"] }[r.verdict] || ["signs", "Some scam signs", "alert"];
-      const order = ["clear", "signs", "scam"];
-      const idx = order.indexOf(level[0]);
+      const r = DEEPFAKE_RESULT;
       return `
-        <div class="verdict ${level[0]}"><span class="v-icon">${icon(level[2])}</span><div><div class="v-title">${level[1]}</div><div class="v-sub num">${Math.round(r.confidence * 100)}% confidence</div></div></div>
-        <div class="meter">${["No common signs", "Some signs", "Likely scam"].map((l, i) => `<span class="${i <= idx ? "on" : ""} ${i === idx ? "active" : ""}">${l}</span>`).join("")}</div>
-        <p class="section-title">Scam tricks</p>
-        <div class="card"><ol class="tricks">${r.tricks.map((t) => `<li><span>${escapeHtml(t)}</span></li>`).join("")}</ol></div>
-        ${r.ai_generated_signs.length ? `<p class="section-title">AI signs</p>${r.ai_generated_signs.map((s) => `<div class="ai-sign">${escapeHtml(s)}</div>`).join("")}` : ""}
-        <div style="margin-top:16px">${tip(escapeHtml(r.summary || "This looks like an e-commerce scam. Sellers like this usually disappear after you pay."))}</div>
+        <div class="verdict scam"><span class="v-icon">${icon("x")}</span><div><div class="v-title">Likely scam</div><div class="v-sub">Deepfake video call</div></div></div>
+        <div class="meter">${["No common signs", "Some signs", "Likely scam"].map((l, i) => `<span class="on ${i === 2 ? "active" : ""}">${l}</span>`).join("")}</div>
+        <div style="margin-top:16px">${tip(r.ollieTip)}</div>
+
+        <p class="section-title">What the deepfake scan found</p>
+        <div class="card scan-rows">
+          ${r.scan.map((row) => `
+            <div class="scan-row">
+              <div class="scan-top"><span class="scan-name">${icon(row.icon)}${row.name}</span><span class="badge ${row.level}">${row.label}</span></div>
+              <div class="scan-bar"><i class="${row.level}" style="width:${row.strength}%"></i></div>
+            </div>`).join("")}
+        </div>
+
+        <p class="section-title">Moments flagged in the video</p>
+        <div class="frames">
+          ${r.moments.map((m) => `
+            <figure class="frame">
+              <div class="frame-img">${frameSvg(m.kind)}<span class="stamp num">${m.time}</span></div>
+              <figcaption>${m.text}</figcaption>
+            </figure>`).join("")}
+        </div>
+
+        <p class="section-title">Voice</p>
+        <div class="card"><ul class="voice-signs">${r.voiceSigns.map((v) => `<li>${icon("mic")}<span>${v}</span></li>`).join("")}</ul></div>
+
+        <p class="section-title">What “David” said</p>
+        <div class="card">
+          <blockquote class="said">${r.transcript}</blockquote>
+          <ol class="tricks" style="margin-top:12px">${r.tricks.map((t) => `<li><span><strong>${t.name}</strong><br>${t.quote}</span></li>`).join("")}</ol>
+        </div>
+
         <div class="btn-stack">
           <button type="button" class="btn btn-primary" id="cancelReport">${icon("report")}Cancel and report</button>
+          <button type="button" class="btn btn-secondary" data-toast="Calling David on the number saved in your phone (demo)">${icon("phone")}Call David on his saved number</button>
           <button type="button" class="btn btn-ghost" id="continueAnyway">Continue anyway</button>
         </div>
-        ${r.demo ? `<p class="small muted" style="text-align:center;margin-top:8px">Demo result. Connect /api/checks to use the real AI.</p>` : ""}`;
+        <p class="small muted" style="text-align:center;margin-top:8px">Demo result. The live deepfake scan connects in Sprint 2.</p>`;
     },
     mount(view) {
       $("#cancelReport", view).addEventListener("click", () => go("reported"));
@@ -440,7 +469,7 @@ function smartPauseSheet() {
       <div class="pause-head">${ollie()}<div><div class="eyebrow">Smart Pause</div><h2 id="sheetTitle">Let’s pause for a moment</h2></div></div>
       <p style="margin-top:12px;color:var(--ink-2)">This transfer is different from your usual ones:</p>
       <ul class="reasons">
-        <li>${icon("alert")}J. Tan was added as a payee 3 minutes ago</li>
+        <li>${icon("alert")}Apex Trading Pte Ltd was added as a payee 3 minutes ago</li>
         <li>${icon("alert")}S$4,800 is much more than you usually send</li>
         <li>${icon("alert")}It is 60% of your available balance</li>
       </ul>
@@ -532,33 +561,81 @@ function statementSheet() {
   };
 }
 
-// ---------- Spellbreak check (real API if available, otherwise demo) ----------
+// ---------- Deepfake scan (demo data until the scan service connects in Sprint 2) ----------
 const session = {};
 
-async function checkWithApi(text) {
-  try {
-    const body = new FormData();
-    body.append("mode", "text");
-    body.append("source", "Telegram");
-    body.append("text", text);
-    const res = await fetch("/api/checks", { method: "POST", credentials: "include", body });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.final || data;
-  } catch (e) {
-    return null;
-  }
+const DEEPFAKE_RESULT = {
+  ollieTip: "This looks like a deepfake of your boss. Hang up and call David on the number saved in your phone before you pay anything.",
+  // strength = how strong the signs are (bar length). Shown as words, not percentages.
+  scan: [
+    { name: "Face", icon: "video", level: "scam", label: "Strong AI signs", strength: 92 },
+    { name: "Voice", icon: "mic", level: "scam", label: "Likely cloned", strength: 86 },
+    { name: "Lip sync", icon: "play", level: "signs", label: "Out of sync 3 times", strength: 64 },
+  ],
+  moments: [
+    { time: "0:07", kind: "edge", text: "Edges of the face blur when he turns his head" },
+    { time: "0:15", kind: "lips", text: "Lips don’t match the words for about half a second" },
+    { time: "0:22", kind: "eyes", text: "Doesn’t blink for over 20 seconds" },
+    { time: "0:31", kind: "light", text: "Light on his face doesn’t match the room" },
+  ],
+  voiceSigns: [
+    "Flat tone with no breathing pauses",
+    "“Keep this between us” is repeated in exactly the same tone",
+    "Completely silent background, unlike a real meeting room",
+  ],
+  transcript: "“Alex, it’s David. I’m stuck in a board meeting in Hong Kong and my corporate card is blocked. Please pay Apex Trading S$4,800 now, before 5pm, and I’ll pay you back tomorrow. Keep this between us for now.”",
+  tricks: [
+    { name: "Urgency", quote: "“now, before 5pm”" },
+    { name: "Secrecy", quote: "“Keep this between us”" },
+    { name: "Unusual payment", quote: "“pay Apex Trading… I’ll pay you back tomorrow”" },
+    { name: "Avoids checks", quote: "“stuck in a board meeting”" },
+  ],
+};
+
+// The steps SpellBreak's agents run on a video, shown live so the demo explains the multi-agent design
+const SCAN_STEPS = [
+  "Pulling key frames from the video",
+  "Face agent: checking for an AI-made face",
+  "Voice agent: checking for a cloned voice",
+  "Text agent: reading what was said",
+  "Explainer: combining the findings",
+];
+
+function runDeepfakeScan(area) {
+  area.innerHTML = `<div class="card scan-progress" aria-live="polite"><ul>${SCAN_STEPS.map((step) => `<li><span class="dot"></span>${step}</li>`).join("")}</ul></div>`;
+  area.scrollIntoView({ behavior: "smooth", block: "end" });
+  const items = area.querySelectorAll("li");
+  let i = 0;
+  const tick = () => {
+    if (i > 0) items[i - 1].className = "done";
+    if (i === items.length) return setTimeout(() => go("result"), 350);
+    items[i].className = "active";
+    i += 1;
+    setTimeout(tick, 650);
+  };
+  tick();
 }
 
-function demoResult() {
-  return {
-    demo: true,
-    verdict: "scam",
-    confidence: 0.91,
-    tricks: ["Pressure: “Many people waiting”", "Pay first by PayNow, before you get anything", "Seller won’t meet in person"],
-    ai_generated_signs: session.photo === false ? [] : ["Ticket photo shows signs of being AI-made"],
-    summary: "This looks like an e-commerce scam. Sellers like this usually disappear after you pay.",
+// Stylised video frame (no real person). kind marks where the scan found a problem.
+function frameSvg(kind) {
+  const boxes = {
+    edge: '<rect x="58" y="40" width="44" height="28" rx="4"/>',
+    lips: '<rect x="69" y="44" width="22" height="13" rx="4"/>',
+    eyes: '<rect x="63" y="27" width="34" height="13" rx="4"/>',
+    light: '<rect x="61" y="15" width="38" height="46" rx="6"/>',
   };
+  const glow = kind === "light" ? '<path d="M80 17 a19 23 0 0 1 0 46 Z" fill="#f5a524" opacity="0.35"/>' : "";
+  const box = boxes[kind] ? `<g fill="none" stroke="#ff4d5a" stroke-width="2" stroke-dasharray="4 3">${boxes[kind]}</g>` : "";
+  return `<svg viewBox="0 0 160 90" aria-hidden="true">
+    <rect width="160" height="90" fill="#2a303b"/>
+    <rect x="0" y="0" width="160" height="58" fill="#343b48"/>
+    <rect x="18" y="12" width="34" height="26" rx="2" fill="#3e4656"/>
+    <path d="M44 90 C46 70 60 64 80 64 C100 64 114 70 116 90 Z" fill="#596173"/>
+    <ellipse cx="80" cy="40" rx="17" ry="22" fill="#8a909c"/>
+    ${glow}
+    <path d="M63 34 Q80 14 97 34 Q96 20 80 17 Q64 20 63 34 Z" fill="#4a4f5a"/>
+    ${box}
+  </svg>`;
 }
 
 const code = () => String(Math.floor(100000 + Math.random() * 900000)).replace(/(\d{3})(\d{3})/, "$1 $2");
@@ -571,7 +648,6 @@ let current = "home";
 function go(name) {
   const screen = SCREENS[name];
   if (!screen) return;
-  if (name === "transfer") session.photo = true;
   current = name;
   closeSheet(true);
 
@@ -624,7 +700,7 @@ document.addEventListener("click", (e) => {
 // ---------- Desktop scenario rail ----------
 const RAIL = [
   ["Set up", [["E1", "Turn on the extension", "security"]]],
-  ["Transfer to a new payee", [["E2", "Transfer in the app", "transfer"], ["E3", "Smart Pause pop-up", "pause"], ["E4", "Verify first", "verify"], ["E5", "Result and safe actions", "result"]]],
+  ["Deepfake boss on a video call", [["E2", "Urgent transfer for “David”", "transfer"], ["E3", "Smart Pause pop-up", "pause"], ["E4", "Verify first: the video call", "verify"], ["E5", "Deepfake scan result", "result"]]],
   ["QR payment", [["E6", "What are you paying for?", "scan"], ["E7", "QR mismatch pause", "qr-mismatch"]]],
   ["Login code", [["E8", "Login Code Guard", "onetoken"]]],
   ["Statements", [["E9", "Who is this for?", "statements"], ["E10", "Statement Shield: stop", "statement-stop"]]],
@@ -640,7 +716,6 @@ $("#railOllie").innerHTML = ollieSvg();
 function runScenario(target) {
   if (!state.on) { state.on = true; save(); } // scenarios need the extension on
   if (target === "pause") { go("transfer"); openSheet(smartPauseSheet()); return; }
-  if (target === "result") session.result = demoResult();
   go(target);
 }
 

@@ -19,7 +19,11 @@ try {
 if (process.argv.includes("--mock")) process.env.AI_MOCK = "true";
 
 const agents = require("../services/ai/agents");
-const { isValidResult } = require("../services/ai/scamSchema");
+const { parseScamResult } = require("../services/ai/scamSchema");
+const isValidResult = (r) => parseScamResult(r).ok;
+
+// manifest.json uses scam / suspicious / safe; the AI now returns the 3 levels
+const EXPECTED_LEVEL = { scam: "likely_scam", suspicious: "some_signs", safe: "no_common_signs" };
 const { MODEL, TRANSCRIBE_MODEL, MOCK } = require("../services/ai/openaiClient");
 
 // Prices in USD - CHECK openai.com/api/pricing before the Sprint Review,
@@ -46,16 +50,14 @@ function toInput(c) {
   if (filePath && !fs.existsSync(filePath)) return { skip: `file not found: ${c.file}` };
 
   if (c.kind === "text") return { text: c.text };
-  if (c.kind === "image") return { imagePaths: [filePath], note: c.note };
+  if (c.kind === "image") return { images: [{ path: filePath }], note: c.note };
   if (c.kind === "voice") return { audioPath: filePath };
-  if (c.kind === "multi") return { text: c.text, imagePaths: [filePath], note: c.note };
+  if (c.kind === "multi") return { text: c.text, images: [{ path: filePath }], note: c.note };
   return { skip: `unknown kind: ${c.kind}` };
 }
 
 function sumUsage(output) {
-  const all = [...output.findings.map((f) => f.usage)];
-  if (output.explainerUsage) all.push(output.explainerUsage);
-  return all.reduce(
+  return output.findings.map((f) => f.usage).reduce(
     (t, u) => ({ inputTokens: t.inputTokens + u.inputTokens, outputTokens: t.outputTokens + u.outputTokens }),
     { inputTokens: 0, outputTokens: 0 }
   );
@@ -91,10 +93,10 @@ async function main() {
       const usage = sumUsage(output);
       const audioClips = input.audioPath ? 1 : 0;
       const formatOk = isValidResult(output.final) && output.findings.every((f) => isValidResult(f.result));
-      const correct = output.final.verdict === c.expected;
+      const correct = output.final.level === EXPECTED_LEVEL[c.expected];
 
       console.log(
-        `${correct ? "✔" : "✘"} ${c.id} [${c.kind}] expected=${c.expected} got=${output.final.verdict} ` +
+        `${correct ? "✔" : "✘"} ${c.id} [${c.kind}] expected=${EXPECTED_LEVEL[c.expected]} got=${output.final.level} ` +
           `(${Math.round(output.final.confidence * 100)}%) type=${output.final.scam_type} ` +
           `format=${formatOk ? "ok" : "BAD"} ${ms}ms`
       );
@@ -103,7 +105,8 @@ async function main() {
         id: c.id,
         kind: c.kind,
         expected: c.expected,
-        got: output.final.verdict,
+        got: output.final.level,
+        privacy: output.privacy,
         correct,
         formatOk,
         ms,
