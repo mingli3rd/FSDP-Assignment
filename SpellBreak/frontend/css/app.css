@@ -493,6 +493,9 @@ mark.flag {
   transition: opacity 0.2s, transform 0.2s;
 }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast { max-width: min(92vw, 34rem); }
+.toast svg { flex: none; width: 20px; height: 20px; }
+.toast span { flex: 1; }
 
 /* =========================================================
    Auth pages (login / register)
@@ -1029,8 +1032,20 @@ body[data-shell="staff"] .content { max-width: 110rem; }
 .cases tbody tr[aria-selected="true"] td:first-child { box-shadow: inset 3px 0 var(--red); }
 .cases .empty { text-align: center; color: var(--ink-3); padding: 28px; white-space: normal; }
 
-.case-detail { position: sticky; top: 5.5rem; }
+/* Not sticky: with the note box and the audit trail this panel is taller than the
+   screen, and a sticky panel would cut the bottom of the trail off. */
+.case-detail { align-self: start; }
 .case-detail .meter { margin-top: 4px; }
+.case-note { min-height: 84px; }
+.detail-actions .note-btn { grid-column: 1 / -1; }
+.detail-actions .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Audit trail on the case detail (SCRUM-27) */
+.timeline.audit { margin-top: 8px; }
+.timeline.audit li { grid-template-columns: 76px 1fr; }
+.timeline.audit .audit-who,
+.timeline.audit .audit-note { display: block; font-size: 0.85rem; font-weight: 500; color: var(--ink-3); margin-top: 2px; }
+.timeline.audit .audit-note { color: var(--ink-2); font-weight: 500; white-space: pre-wrap; overflow-wrap: anywhere; }
 .evidence-quote { margin: 0 0 12px; padding: 14px 16px; border-left: 3px solid var(--red); background: var(--paper); border-radius: 0 var(--r-md) var(--r-md) 0; font-size: 0.95rem; }
 .detail-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
 .detail-actions .btn { white-space: nowrap; padding-inline: 12px; }

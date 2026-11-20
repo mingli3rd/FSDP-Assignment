@@ -24,9 +24,9 @@ Status: **Live** = runs on the backend and database. **Prototype** = working scr
 | Call Context Check | 4 quick taps about a suspicious call, matched against known AI-scam patterns | Prototype |
 | Verify with OCBC | One-time code a real OCBC officer can read back, safe call-back channels, and "verify the requester" for boss or family money requests | Prototype |
 | Chat with Ollie | Ollie, the owl mascot, answers scam questions | Prototype |
-| Reports | Choose what evidence to include, send the case to OCBC, or download a case summary for a police report | Prototype |
+| Reports | Choose what evidence to include, send the case to OCBC, or download a case summary for a police report | Live |
 | Extension settings | Choose which features are on and how many warning signs trigger a Smart Pause | Prototype |
-| Employee Triage Dashboard | Staff view of reported cases sorted by risk and amount, with case details and actions | Prototype |
+| Employee Triage Dashboard | Staff view of reported cases sorted by risk and amount, with case details and actions | Live |
 
 ### Mobile banking demo (http://localhost:4000)
 
@@ -103,6 +103,11 @@ npm install
 4. **Create the tables.** Open and run `SpellBreak/database/schema.sql`, then `SpellBreak/database/seed.sql`.
 
    A fresh setup needs nothing else. If your FSDP database was made with an **older** `schema.sql` (before the AI check was added), also run `SpellBreak/database/migrations/scrum17_content_checks.sql` once. It adds the columns the AI check saves to.
+
+   For the Employee Triage Dashboard:
+
+   - If your FSDP database was made with a `schema.sql` from **before** the triage dashboard was added, run `SpellBreak/database/migrations/scrum25_triage_cases.sql` once. It adds the columns the dashboard uses to `Cases`. A fresh setup from the current `schema.sql` doesn't need it.
+   - Run `SpellBreak/database/migrations/scrum25_triage_cases_seed.sql` to load the synthetic sample cases. It only inserts when the `Cases` table is empty.
 
 ### 4. Create the `.env` file
 

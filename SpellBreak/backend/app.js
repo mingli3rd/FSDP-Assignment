@@ -17,6 +17,10 @@ const checkController = require("./controllers/checkController");
 const { validateCheck } = require("./middlewares/checkValidation");
 const { uploadCheckImage } = require("./middlewares/uploadImage");
 
+// --- Cases (one-tap report + Employee Triage Dashboard: SCRUM-25, 26, 27) ---
+const caseController = require("./controllers/caseController");
+const { validateCreateCase, validateCaseAction, validateCaseId } = require("./middlewares/caseValidation");
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -49,6 +53,15 @@ app.get("/api/auth/me", verifyToken, authController.getCurrentUser);
 app.post("/api/checks", verifyToken, requireCustomer, uploadCheckImage, validateCheck, checkController.createCheck);
 app.get("/api/checks/mine", verifyToken, requireCustomer, checkController.getMyChecks);
 app.get("/api/checks/:id", verifyToken, requireCustomer, checkController.getCheck);
+
+// ===================== CASE ROUTES (customer) =====================
+// SCRUM-26 one-tap report: saves a case for OCBC staff to triage
+app.post("/api/cases", verifyToken, requireCustomer, validateCreateCase, caseController.createCase);
+
+// ===================== EMPLOYEE TRIAGE ROUTES (SCRUM-25, SCRUM-27) =====================
+app.get("/api/employee/cases", verifyToken, requireEmployee, caseController.listCases);
+app.get("/api/employee/cases/:id", verifyToken, requireEmployee, validateCaseId, caseController.getCase);
+app.post("/api/employee/cases/:id/actions", verifyToken, requireEmployee, validateCaseId, validateCaseAction, caseController.applyAction);
 
 // Mobile banking demo (extension screens) on port 4000 - see mobile-server.js
 require("./mobile-server");
