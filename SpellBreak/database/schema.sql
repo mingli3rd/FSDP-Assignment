@@ -90,9 +90,19 @@ CREATE TABLE Cases (
     priority     VARCHAR(10) NOT NULL DEFAULT 'medium'
                  CHECK (priority IN ('low', 'medium', 'high')),
     summary      NVARCHAR(MAX) NULL,
+    resolution   VARCHAR(20)   NULL CHECK (resolution IN ('released', 'scam')),  -- set when status = 'closed'
+    risk_score   INT           NULL CHECK (risk_score BETWEEN 0 AND 100),
+    amount       DECIMAL(12,2) NULL CHECK (amount >= 0),
+    amount_note  NVARCHAR(150) NULL,            -- e.g. 'S$4,800 to new payee'
+    scam_type    VARCHAR(50)   NULL,            -- e.g. 'E-commerce', 'Impersonation'
+    looks_like   NVARCHAR(150) NULL,            -- e.g. 'Voice-clone boss'
+    source       NVARCHAR(100) NULL,            -- e.g. 'Extension, Smart Pause'
+    evidence     NVARCHAR(MAX) NULL,            -- what the customer chose to submit
+    signals      NVARCHAR(MAX) NULL,            -- JSON array of red flags
     created_at   DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
     updated_at   DATETIME2 NOT NULL DEFAULT SYSDATETIME()
 );
+CREATE INDEX IX_Cases_status_risk ON Cases (status, risk_score DESC);
 
 -- Evidence + escalation audit trail for each case
 CREATE TABLE CaseEvents (
@@ -101,7 +111,7 @@ CREATE TABLE CaseEvents (
     actor_user_id  INT NULL REFERENCES Users(id),
     event_type     VARCHAR(20) NOT NULL
                    CHECK (event_type IN ('created', 'note', 'status_change', 'evidence_added', 'escalated')),
-    details        NVARCHAR(MAX) NULL,
+    details        NVARCHAR(MAX) NULL,          -- JSON: {"action":"release","from":"new","to":"closed","note":"..."}
     created_at     DATETIME2 NOT NULL DEFAULT SYSDATETIME()
 );
 GO

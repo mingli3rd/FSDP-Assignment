@@ -17,7 +17,8 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
-function showToast(message) {
+// kind: "error" shows a warning icon and stays a little longer. Anything else is a success toast.
+function showToast(message, kind) {
   let toast = document.getElementById("toast");
   if (!toast) {
     toast = document.createElement("div");
@@ -27,10 +28,11 @@ function showToast(message) {
     toast.setAttribute("aria-live", "polite");
     document.body.appendChild(toast);
   }
-  toast.innerHTML = `${icon("check")}<span>${escapeHtml(message)}</span>`;
+  const isError = kind === "error";
+  toast.innerHTML = `${icon(isError ? "alert" : "check")}<span>${escapeHtml(message)}</span>`;
   toast.classList.add("show");
   clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(() => toast.classList.remove("show"), 2800);
+  showToast.timer = setTimeout(() => toast.classList.remove("show"), isError ? 5000 : 2800);
 }
 
 // ---------- Ollie (original mascot: a little guardian owl) ----------

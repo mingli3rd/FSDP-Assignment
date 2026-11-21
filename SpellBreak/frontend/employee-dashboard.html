@@ -24,26 +24,26 @@
           <label class="search">
             <span class="sr-only">Search cases</span>
             <span data-icon="search"></span>
-            <input class="input" id="caseSearch" type="search" placeholder="Search case, customer or payee" />
+            <input class="input" id="caseSearch" type="search" placeholder="Search case, customer or scam type" />
           </label>
         </div>
 
         <div class="kpis">
-          <div class="kpi"><span>Open cases</span><strong class="num">24</strong></div>
-          <div class="kpi alert"><span>High risk</span><strong class="num">7</strong></div>
-          <div class="kpi"><span>Amount at stake</span><strong class="num">S$86,400</strong></div>
-          <div class="kpi"><span>Median time to triage</span><strong class="num">6 min</strong></div>
+          <div class="kpi"><span>Open cases</span><strong class="num" id="kpiOpen">-</strong></div>
+          <div class="kpi alert"><span>High risk (open)</span><strong class="num" id="kpiHigh">-</strong></div>
+          <div class="kpi"><span>Amount at stake</span><strong class="num" id="kpiAmount">-</strong></div>
+          <div class="kpi"><span>Median time to triage</span><strong class="num" id="kpiTriage">-</strong></div>
         </div>
-        <p class="hint" style="margin:-6px 0 18px">Numbers are sample data.</p>
+        <p class="hint" style="margin:-6px 0 18px" id="kpiHint">Loading cases...</p>
 
         <div class="triage-layout">
           <section class="panel table-panel" aria-labelledby="tableTitle">
             <h2 class="sr-only" id="tableTitle">Cases</h2>
             <div class="segmented" role="tablist" aria-label="Filter by risk" id="riskFilter">
-              <button type="button" role="tab" aria-selected="true" data-risk="all">All (24)</button>
-              <button type="button" role="tab" aria-selected="false" data-risk="high">High (7)</button>
-              <button type="button" role="tab" aria-selected="false" data-risk="med">Medium (11)</button>
-              <button type="button" role="tab" aria-selected="false" data-risk="low">Low (6)</button>
+              <button type="button" role="tab" aria-selected="true" data-risk="all">All</button>
+              <button type="button" role="tab" aria-selected="false" data-risk="high">High</button>
+              <button type="button" role="tab" aria-selected="false" data-risk="med">Medium</button>
+              <button type="button" role="tab" aria-selected="false" data-risk="low">Low</button>
             </div>
             <div class="table-wrap">
               <table class="cases">
